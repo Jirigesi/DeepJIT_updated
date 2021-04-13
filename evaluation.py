@@ -52,5 +52,6 @@ def evaluation_model(data, params):
     df = pd.DataFrame(all_label, columns=["actual"])
     df["pred"] = all_predict
     df.to_csv('jiri_result.csv', index=False)
+
     print(classification_report(all_label, all_predict))
 
