@@ -5,6 +5,8 @@ import torch
 from tqdm import tqdm
 import pandas as pd
 from sklearn.metrics import classification_report
+import sklearn.metrics as metrics
+import numpy as np
 
 
 def evaluation_model(data, params):
@@ -49,9 +51,23 @@ def evaluation_model(data, params):
 
     auc_score = roc_auc_score(y_true=all_label,  y_score=all_predict)
     print('Test data -- AUC score:', auc_score)
+
+    fpr, tpr, threshold = metrics.roc_curve(all_label, all_predict)
+    i = np.arange(len(tpr))
+    roc = pd.DataFrame({'tf': pd.Series(tpr - (1 - fpr), index=i), 'threshold': pd.Series(threshold, index=i)})
+    roc_t = roc.iloc[(roc.tf - 0).abs().argsort()[:1]]
+    threshold = list(roc_t['threshold'])[0]
+    prediction = []
+    for predict_possible in all_predict:
+        if predict_possible >= threshold:
+            prediction.append(1)
+        else:
+            prediction.append(0)
+
     df = pd.DataFrame(all_label, columns=["actual"])
-    df["pred"] = all_predict
+    df["prediction_prob"] = all_predict
+    df["prediction"] = prediction
     df.to_csv('jiri_result.csv', index=False)
 
-    print(classification_report(all_label, all_predict))
+    print(classification_report(all_label, prediction))
 
