@@ -3,6 +3,8 @@ from utils import mini_batches_test
 from sklearn.metrics import roc_auc_score    
 import torch 
 from tqdm import tqdm
+import pandas as pd
+
 
 def evaluation_model(data, params):
     pad_msg, pad_code, labels, dict_msg, dict_code = data
@@ -46,3 +48,7 @@ def evaluation_model(data, params):
 
     auc_score = roc_auc_score(y_true=all_label,  y_score=all_predict)
     print('Test data -- AUC score:', auc_score)
+    df = pd.DataFrame(all_label, columns=["actual"])
+    df["pred"] = all_predict
+    df.to_csv('jiri_result.csv', index=False)
+
