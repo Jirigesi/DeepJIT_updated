@@ -62,12 +62,14 @@ def evaluation_siamese_model(data, all_bug_data, params):
                     eucledian_distance = eucledian_distance.cpu().numpy()
 
                     for i, x in enumerate(eucledian_distance):
-                        if i > len(distances) - 1:
-                            distances.append([x])
-                        else:
+                        try:
                             distances[i].append(x)
+                        except IndexError:
+                            distances.append([x])
+
                     print(distances)
                     print(len(distances))
+
                     break
 
                 else:
