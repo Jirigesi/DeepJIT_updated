@@ -37,7 +37,7 @@ class DeepJITSiamese(nn.Module):
         # print("x shape[0], [1]: ", x.shape[0], x.shape[1], x.shape[2], x.shape[0])
         # original x shape: ([256, 64])
         x = x.unsqueeze(1)  # (N, Ci, W, D) （256， 1， 64）
-
+        print("In msg function...")
         print("x type:", type(x), x.shape)
 
         #
@@ -49,7 +49,7 @@ class DeepJITSiamese(nn.Module):
         return x
 
     def forward_code(self, x, convs_line, convs_hunks):
-
+        print("In code function...")
         print("x shape[0], [1]: ", x.shape[0], x.shape[1], x.shape[2], x.shape[0])
 
         n_batch, n_file = x.shape[0], x.shape[1]
