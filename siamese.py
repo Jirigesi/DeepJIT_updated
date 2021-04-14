@@ -35,7 +35,8 @@ class DeepJITSiamese(nn.Module):
     def forward_msg(self, x, convs):
         # note that we can use this function for commit code line to get the information of the line\
         # print("x shape[0], [1]: ", x.shape[0], x.shape[1], x.shape[2], x.shape[0])
-        # x = x.unsqueeze(1)  # (N, Ci, W, D)
+        x = x.unsqueeze(2)  # (N, Ci, W, D) （256， 1， 64）
+
         print("x type:", type(x), x.shape)
 
         #
