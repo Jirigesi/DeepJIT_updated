@@ -35,7 +35,8 @@ class DeepJITSiamese(nn.Module):
     def forward_msg(self, x, convs):
         # note that we can use this function for commit code line to get the information of the line
         x = x.unsqueeze(1)  # (N, Ci, W, D)
-        x = [F.relu(conv(x)).squeeze(3) for conv in convs]  # [(N, Co, W), ...]*len(Ks)
+        # jiri made change here from 3 to 1
+        x = [F.relu(conv(x)).squeeze(1) for conv in convs]  # [(N, Co, W), ...]*len(Ks)
         x = [F.max_pool1d(i, i.size(2)).squeeze(2) for i in x]  # [(N, Co), ...]*len(Ks)
         x = torch.cat(x, 1)
         return x
