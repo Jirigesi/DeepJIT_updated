@@ -70,16 +70,24 @@ if __name__ == '__main__':
         data = pickle.load(open(params.pred_data, 'rb'))
         bug_data = pickle.load(open(params.buggy_data, 'rb'))
 
-        ids, labels, msgs, codes = data 
-        labels = np.array(labels)        
+        ids, labels, msgs, codes = data
+        labels = np.array(labels)
+
+        bug_labels, bug_msgs, bug_codes = bug_data
+        bug_labels = np.array(bug_labels)
 
         dictionary = pickle.load(open(params.dictionary_data, 'rb'))   
         dict_msg, dict_code = dictionary
 
         pad_msg = padding_data(data=msgs, dictionary=dict_msg, params=params, type='msg')        
         pad_code = padding_data(data=codes, dictionary=dict_code, params=params, type='code')
-        
+
+        pad_bug_msg = padding_data(data=bug_msgs, dictionary=dict_msg, params=params, type='msg')
+        pad_bug_code = padding_data(data=bug_codes, dictionary=dict_code, params=params, type='code')
+
         data = (pad_msg, pad_code, labels, dict_msg, dict_code)
+        bug_data = (pad_bug_msg, pad_bug_code, bug_labels)
+
         evaluation_siamese_model(data=data, all_bug_data=bug_data, params=params)
     else:
         print('--------------------------------------------------------------------------------')
