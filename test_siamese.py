@@ -42,6 +42,7 @@ def evaluation_siamese_model(data, all_bug_data, params):
         for i, batch in enumerate(batches):
             distances = []
             for j, compare_batch in enumerate(compare_batches):
+                print("batches times", i)
                 print("compartive times:", j)
 
                 pad_msg, pad_code, label = batch
@@ -63,14 +64,14 @@ def evaluation_siamese_model(data, all_bug_data, params):
                     eucledian_distance = F.pairwise_distance(output1, output2)
                     eucledian_distance = eucledian_distance.cpu().numpy()
 
-                    for index, x in enumerate(eucledian_distance):
-                        try:
-                            distances[index].append(x)
-                        except IndexError:
-                            distances.append([x])
+                for index, distance_value in enumerate(eucledian_distance):
+                    try:
+                        distances[index].append(distance_value)
+                    except IndexError:
+                        distances.append([distance_value])
 
-                    print(distances)
-                    print(len(distances))
+                print(distances)
+                print(len(distances))
 
                 break
 
