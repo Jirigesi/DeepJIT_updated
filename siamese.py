@@ -23,7 +23,7 @@ class DeepJITSiamese(nn.Module):
 
         # CNN-2D for commit code
         self.embed_code = nn.Embedding(V_code, Dim)
-        self.convs_code_line = nn.ModuleList([nn.Conv2d(Ci, Co, (K, Dim)) for K in Ks])
+        self.convs_code_line = nn.ModuleList([nn.Conv2d(Ci, Co, (K, Dim)) for K in Ks]) # 4 dimentional
         self.convs_code_file = nn.ModuleList([nn.Conv2d(Ci, Co, (K, Co * len(Ks))) for K in Ks])
 
         # other information
@@ -36,7 +36,7 @@ class DeepJITSiamese(nn.Module):
         # note that we can use this function for commit code line to get the information of the line
         x = x.unsqueeze(1)  # (N, Ci, W, D)
         # jiri made change here from 3 to 1
-        x = [F.relu(conv(x)).squeeze(2) for conv in convs]  # [(N, Co, W), ...]*len(Ks)
+        x = [F.relu(conv(x)).squeeze(3) for conv in convs]  # [(N, Co, W), ...]*len(Ks)
         # jiri made change here from 2 to 1
         x = [F.max_pool1d(i, i.size(2)).squeeze(2) for i in x]  # [(N, Co), ...]*len(Ks)
 
@@ -60,7 +60,7 @@ class DeepJITSiamese(nn.Module):
 
     def forward_once(self, msg, code):
         x_msg = self.embed_msg(msg)
-        x_msg = self.forward_msg(x_msg, self.convs_msg)
+        x_msg = self.forward_msg([x_msg], self.convs_msg)
 
         x_code = self.embed_code(code)
         x_code = self.forward_code(x_code, self.convs_code_line, self.convs_code_file)
