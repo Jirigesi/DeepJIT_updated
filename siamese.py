@@ -37,7 +37,9 @@ class DeepJITSiamese(nn.Module):
         x = x.unsqueeze(1)  # (N, Ci, W, D)
         # jiri made change here from 3 to 1
         x = [F.relu(conv(x)).squeeze(1) for conv in convs]  # [(N, Co, W), ...]*len(Ks)
-        x = [F.max_pool1d(i, i.size(2)).squeeze(2) for i in x]  # [(N, Co), ...]*len(Ks)
+        # jiri made change here from 2 to 1
+        x = [F.max_pool1d(i, i.size(2)).squeeze(1) for i in x]  # [(N, Co), ...]*len(Ks)
+
         x = torch.cat(x, 1)
         return x
 
