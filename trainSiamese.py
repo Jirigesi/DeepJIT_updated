@@ -38,40 +38,38 @@ def train_model_siamese(data, params):
     iteration_number = 0
 
     for epoch in range(1, params.num_epochs + 1):
-
         # building batches for training model
         batches1 = mini_batches_train(X_msg=data_pad_msg, X_code=data_pad_code, Y=data_labels)
-        batches2 = mini_batches_train(X_msg=data_pad_msg, X_code=data_pad_code, Y=data_labels)
-        for i, (batch1, batch2) in enumerate(tqdm(zip(batches1, batches2))):
-            pad_msg1, pad_code1, labels1 = batch1
-            pad_msg2, pad_code2, labels2 = batch2
-            if torch.cuda.is_available():
-                pad_msg1, pad_code1, labels1 = torch.tensor(pad_msg1).cuda(), torch.tensor(
-                    pad_code1).cuda(), torch.cuda.FloatTensor(labels1)
-                pad_msg2, pad_code2, labels2 = torch.tensor(pad_msg2).cuda(), torch.tensor(
-                    pad_code2).cuda(), torch.cuda.FloatTensor(labels2)
-            else:
-                pad_msg1, pad_code1, labels1 = torch.tensor(pad_msg1).long(), torch.tensor(pad_code1).long(), torch.tensor(
-                    labels1).float()
-                pad_msg2, pad_code2, labels2 = torch.tensor(pad_msg2).long(), torch.tensor(
-                    pad_code2).long(), torch.tensor(labels2).float()
-
-            temp_labels = []
-            for i in range(len(labels1)):
-                if labels1[i] == labels2[i]:
-                    temp_labels.append(1)
+        for _ in range(len(data_labels)):
+            batches2 = mini_batches_train(X_msg=data_pad_msg, X_code=data_pad_code, Y=data_labels)
+            for i, (batch1, batch2) in enumerate(tqdm(zip(batches1, batches2))):
+                pad_msg1, pad_code1, labels1 = batch1
+                pad_msg2, pad_code2, labels2 = batch2
+                if torch.cuda.is_available():
+                    pad_msg1, pad_code1, labels1 = torch.tensor(pad_msg1).cuda(), torch.tensor(
+                        pad_code1).cuda(), torch.cuda.FloatTensor(labels1)
+                    pad_msg2, pad_code2, labels2 = torch.tensor(pad_msg2).cuda(), torch.tensor(
+                        pad_code2).cuda(), torch.cuda.FloatTensor(labels2)
                 else:
-                    temp_labels.append(0)
+                    pad_msg1, pad_code1, labels1 = torch.tensor(pad_msg1).long(), torch.tensor(pad_code1).long(), torch.tensor(
+                        labels1).float()
+                    pad_msg2, pad_code2, labels2 = torch.tensor(pad_msg2).long(), torch.tensor(
+                        pad_code2).long(), torch.tensor(labels2).float()
 
-            temp_labels = torch.cuda.FloatTensor(temp_labels)
+                temp_labels = []
+                for i in range(len(labels1)):
+                    if labels1[i] == labels2[i]:
+                        temp_labels.append(1)
+                    else:
+                        temp_labels.append(0)
+                temp_labels = torch.cuda.FloatTensor(temp_labels)
 
-
-            optimizer.zero_grad()
-            output1, output2 = model.forward(pad_msg1, pad_code1, pad_msg2, pad_code2)
-            print("output1 shape:", output1.shape)
-            loss_contrastive = criterion(output1, output2, temp_labels)
-            loss_contrastive.backward()
-            optimizer.step()
+                optimizer.zero_grad()
+                output1, output2 = model.forward(pad_msg1, pad_code1, pad_msg2, pad_code2)
+                # print("output1 shape:", output1.shape)
+                loss_contrastive = criterion(output1, output2, temp_labels)
+                loss_contrastive.backward()
+                optimizer.step()
 
         print("Epoch {}\n Current loss {}\n".format(epoch, loss_contrastive.item()))
         iteration_number += 10
