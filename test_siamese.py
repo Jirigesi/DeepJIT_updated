@@ -72,7 +72,7 @@ def evaluation_siamese_model(data, all_bug_data, params):
                     print(distances)
                     print(len(distances))
 
-                    break
+                break
 
                 # else:
                 #     predict = model.forward(pad_msg, pad_code)
