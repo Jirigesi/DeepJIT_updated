@@ -42,14 +42,14 @@ def train_model_siamese(data, params):
             data_pad_msg1 = data_pad_msg[i]
             data_pad_code1 = data_pad_msg[i]
             data_labels1 = data_labels[i]
-            data_pad_msg1, data_pad_code1, data_labels1 = torch.tensor([data_pad_msg1]).cuda(), torch.tensor(
-                [data_pad_code1]).cuda(), torch.cuda.FloatTensor(data_labels1)
+            data_pad_msg1, data_pad_code1, data_labels1 = torch.tensor(data_pad_msg1).cuda(), torch.tensor(
+                data_pad_code1).cuda(), torch.cuda.FloatTensor(data_labels1)
             for j in range(i + 1, len(data_labels)):
                 data_pad_msg2 = data_pad_msg[i]
                 data_pad_code2 = data_pad_msg[i]
                 data_labels2 = data_labels[i]
-                data_pad_msg2, data_pad_code2, data_labels2 = torch.tensor([data_pad_msg2]).cuda(), torch.tensor(
-                    [data_pad_code2]).cuda(), torch.cuda.FloatTensor(data_labels2)
+                data_pad_msg2, data_pad_code2, data_labels2 = torch.tensor(data_pad_msg2).cuda(), torch.tensor(
+                    data_pad_code2).cuda(), torch.cuda.FloatTensor(data_labels2)
 
                 if torch.equal(data_labels1, data_labels2):
                     temp_label = torch.tensor(1).cuda()
