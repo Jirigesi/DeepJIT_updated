@@ -73,13 +73,13 @@ def evaluation_siamese_model(data, all_bug_data, params):
                     predict = model.forward(pad_msg, pad_code)
                     predict = predict.detach().numpy().tolist()
 
-            all_predict += predict
-            all_label += labels.tolist()
-
-    # write data in a file.
-    with open('siamese_result.txt', 'w') as filehandle:
-        for listitem in all_predict:
-            filehandle.write('%s\n' % listitem)
+    #         all_predict += predict
+    #         all_label += labels.tolist()
+    #
+    # # write data in a file.
+    # with open('siamese_result.txt', 'w') as filehandle:
+    #     for listitem in all_predict:
+    #         filehandle.write('%s\n' % listitem)
 
 
 
