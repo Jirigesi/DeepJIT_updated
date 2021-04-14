@@ -13,9 +13,10 @@ def evaluation_siamese_model(data, all_bug_data, params):
     pad_msg, pad_code, labels, dict_msg, dict_code = data
     print("pad_msg type:", type(pad_msg))
     pad_msg_compare, pad_code_compare, labels_compare = all_bug_data
-
+    pad_msg_compare = np.array(pad_msg_compare)
+    print("pad_msg_compare type:", type(pad_msg_compare))
     batches = mini_batches_test(X_msg=pad_msg, X_code=pad_code, Y=labels)
-    compare_batches = mini_batches_test(X_msg=np.array(pad_msg_compare), X_code=np.array(pad_code_compare), Y=np.array(labels_compare))
+    compare_batches = mini_batches_test(X_msg=pad_msg_compare, X_code=np.array(pad_code_compare), Y=np.array(labels_compare))
 
     params.vocab_msg, params.vocab_code = len(dict_msg), len(dict_code)
 
