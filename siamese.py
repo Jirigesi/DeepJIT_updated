@@ -42,10 +42,10 @@ class DeepJITSiamese(nn.Module):
 
     def forward_code(self, x, convs_line, convs_hunks):
 
-        print("x shape[0], [1]: ", x.shape[0], x.shape[1], x.shape[2], x.shape[3])
+        print("x shape[0], [1]: ", x.shape[0], x.shape[1], x.shape[2], x.shape[0])
 
         n_batch, n_file = x.shape[0], x.shape[1]
-        x = x.reshape(n_batch * n_file, x.shape[2], x.shape[3])
+        x = x.reshape(n_batch * n_file, x.shape[2], x.shape[0])
 
         # apply cnn 2d for each line in a commit code
         x = self.forward_msg(x=x, convs=convs_line)
