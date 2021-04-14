@@ -41,6 +41,9 @@ class DeepJIT(nn.Module):
         return x
 
     def forward_code(self, x, convs_line, convs_hunks):
+
+        print("x shape[0], [1]: ", x.shape[0], x.shape[1], x.shape[2], x.shape[3])
+
         n_batch, n_file = x.shape[0], x.shape[1]
         x = x.reshape(n_batch * n_file, x.shape[2], x.shape[3])
 

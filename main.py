@@ -59,8 +59,8 @@ if __name__ == '__main__':
         pad_code = padding_data(data=codes, dictionary=dict_code, params=params, type='code')
     
         data = (pad_msg, pad_code, labels, dict_msg, dict_code)
-        # train_model(data=data, params=params)
-        train_model_siamese(data=data, params=params)
+        train_model(data=data, params=params)
+        # train_model_siamese(data=data, params=params)
 
     elif params.predict is True:
         data = pickle.load(open(params.pred_data, 'rb'))
