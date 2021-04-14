@@ -65,7 +65,7 @@ class DeepJITSiamese(nn.Module):
         out = F.relu(out)
         out = self.fc2(out)
         # remove this step, direct use results from fc2 as output
-        # out = self.sigmoid(out).squeeze(1)
+        out = self.sigmoid(out).squeeze(1)
         return out
 
     def forward(self, msg1, code1, msg2, code2):

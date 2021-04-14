@@ -52,14 +52,13 @@ def train_model_siamese(data, params):
                 data_pad_msg2, data_pad_code2, data_labels2 = torch.tensor(data_pad_msg2).cuda(), torch.tensor(
                     data_pad_code2).cuda(), torch.cuda.FloatTensor(data_labels2)
 
-                optimizer.zero_grad()
-                output1, output2 = model.forward(data_pad_msg1, data_pad_code1, data_pad_msg2, data_pad_code2)
-
                 if torch.equal(data_labels1, data_labels2):
                     temp_label = torch.tensor(1).cuda()
                 else:
                     temp_label = torch.tensor(0).cuda()
 
+                optimizer.zero_grad()
+                output1, output2 = model.forward(data_pad_msg1, data_pad_code1, data_pad_msg2, data_pad_code2)
                 loss_contrastive = criterion(output1, output2, temp_label)
                 loss_contrastive.backward()
                 optimizer.step()
