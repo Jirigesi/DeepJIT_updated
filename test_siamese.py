@@ -58,7 +58,7 @@ def evaluation_siamese_model(data, all_bug_data, params):
 
                 eucledian_distance = F.pairwise_distance(output1, output2)
                 eucledian_distance = eucledian_distance.cpu().numpy()
-                print("eucledian_distance")
+                print(eucledian_distance)
                 print(type(eucledian_distance), len(eucledian_distance))
                 print(eucledian_distance.size())
 
