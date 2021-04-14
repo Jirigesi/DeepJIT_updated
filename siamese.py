@@ -33,8 +33,10 @@ class DeepJITSiamese(nn.Module):
         self.sigmoid = nn.Sigmoid()
 
     def forward_msg(self, x, convs):
-        # note that we can use this function for commit code line to get the information of the line
+        # note that we can use this function for commit code line to get the information of the line\
+        print("x shape[0], [1]: ", x.shape[0], x.shape[1], x.shape[2], x.shape[0])
         x = x.unsqueeze(1)  # (N, Ci, W, D)
+
         # jiri made change here from 3 to 1
         x = [F.relu(conv(x)).squeeze(3) for conv in convs]  # [(N, Co, W), ...]*len(Ks)
         # jiri made change here from 2 to 1
@@ -60,7 +62,7 @@ class DeepJITSiamese(nn.Module):
 
     def forward_once(self, msg, code):
         x_msg = self.embed_msg(msg)
-        x_msg = self.forward_msg([x_msg], self.convs_msg)
+        x_msg = self.forward_msg(x_msg, self.convs_msg)
 
         x_code = self.embed_code(code)
         x_code = self.forward_code(x_code, self.convs_code_line, self.convs_code_file)
