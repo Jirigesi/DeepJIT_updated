@@ -40,7 +40,10 @@ def evaluation_siamese_model(data, all_bug_data, params):
 
     with torch.no_grad():
         all_predict, all_label = list(), list()
+
+
         for i, (batch, compare_batch) in enumerate(tqdm(zip(batches, compare_batches))):
+            distances = []
             pad_msg, pad_code, label = batch
             pad_msg_compare, pad_code_compare, label_compare = batch
 
@@ -58,9 +61,14 @@ def evaluation_siamese_model(data, all_bug_data, params):
 
                 eucledian_distance = F.pairwise_distance(output1, output2)
                 eucledian_distance = eucledian_distance.cpu().numpy()
-                for i, x in enumerate(eucledian_distance):
-                    print(x)
 
+                for i, x in enumerate(eucledian_distance):
+                    if i > len(distances) - 1:
+                        distances[i] = [x]
+                    else:
+                        distances[i].append(x)
+                print(distances)
+                print(len(distances))
                 break
 
             else:
