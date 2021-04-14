@@ -12,12 +12,7 @@ import torch.nn.functional as F
 
 def evaluation_siamese_model(data, all_bug_data, params):
     pad_msg, pad_code, labels, dict_msg, dict_code = data
-
-
-
     batches = mini_batches_test(X_msg=pad_msg, X_code=pad_code, Y=labels)
-
-
     params.vocab_msg, params.vocab_code = len(dict_msg), len(dict_code)
 
     if len(labels.shape) == 1:
@@ -44,39 +39,39 @@ def evaluation_siamese_model(data, all_bug_data, params):
     with torch.no_grad():
         all_predict, all_label = list(), list()
 
+        for i, batch in enumerate(tqdm(batches)):
+            for j, compare_batch in enumerate(tqdm(compare_batches)):
+                distances = []
+                pad_msg, pad_code, label = batch
+                pad_msg_compare, pad_code_compare, label_compare = compare_batch
 
-        for i, (batch, compare_batch) in enumerate(tqdm(zip(batches, compare_batches))):
-            distances = []
-            pad_msg, pad_code, label = batch
-            pad_msg_compare, pad_code_compare, label_compare = batch
+                if torch.cuda.is_available():
+                    pad_msg, pad_code, labels = torch.tensor(pad_msg).cuda(), torch.tensor(
+                        pad_code).cuda(), torch.cuda.FloatTensor(label)
+                    pad_msg_compare, pad_code_compare, label_compare = torch.tensor(pad_msg_compare).cuda(), torch.tensor(
+                        pad_code_compare).cuda(), torch.cuda.FloatTensor(label_compare)
+                else:
+                    pad_msg, pad_code, label = torch.tensor(pad_msg).long(), torch.tensor(pad_code).long(), torch.tensor(
+                        labels).float()
 
-            if torch.cuda.is_available():
-                pad_msg, pad_code, labels = torch.tensor(pad_msg).cuda(), torch.tensor(
-                    pad_code).cuda(), torch.cuda.FloatTensor(label)
-                pad_msg_compare, pad_code_compare, label_compare = torch.tensor(pad_msg_compare).cuda(), torch.tensor(
-                    pad_code_compare).cuda(), torch.cuda.FloatTensor(label_compare)
-            else:
-                pad_msg, pad_code, label = torch.tensor(pad_msg).long(), torch.tensor(pad_code).long(), torch.tensor(
-                    labels).float()
+                if torch.cuda.is_available():
+                    output1,output2 = model.forward(pad_msg, pad_code, pad_msg_compare, pad_code_compare)
 
-            if torch.cuda.is_available():
-                output1,output2 = model.forward(pad_msg, pad_code, pad_msg_compare, pad_code_compare)
+                    eucledian_distance = F.pairwise_distance(output1, output2)
+                    eucledian_distance = eucledian_distance.cpu().numpy()
 
-                eucledian_distance = F.pairwise_distance(output1, output2)
-                eucledian_distance = eucledian_distance.cpu().numpy()
+                    for i, x in enumerate(eucledian_distance):
+                        if i > len(distances) - 1:
+                            distances.append([x])
+                        else:
+                            distances[i].append(x)
+                    print(distances)
+                    print(len(distances))
+                    break
 
-                for i, x in enumerate(eucledian_distance):
-                    if i > len(distances) - 1:
-                        distances.append([x])
-                    else:
-                        distances[i].append(x)
-                print(distances)
-                print(len(distances))
-                break
-
-            else:
-                predict = model.forward(pad_msg, pad_code)
-                predict = predict.detach().numpy().tolist()
+                else:
+                    predict = model.forward(pad_msg, pad_code)
+                    predict = predict.detach().numpy().tolist()
 
             all_predict += predict
             all_label += labels.tolist()
