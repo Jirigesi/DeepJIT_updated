@@ -68,6 +68,7 @@ def train_model_siamese(data, params):
 
             optimizer.zero_grad()
             output1, output2 = model.forward(pad_msg1, pad_code1, pad_msg2, pad_code2)
+            print("output1:", output1)
             loss_contrastive = criterion(output1, output2, temp_labels)
             loss_contrastive.backward()
             optimizer.step()
