@@ -39,9 +39,6 @@ class DeepJITSiamese(nn.Module):
         x = x.unsqueeze(1)  # (N, Ci, W, D) （256， 1， 64）
 
         print("x type:", type(x), x.shape)
-        x = x.unsqueeze(0)  # (N, Ci, W, D) （256， 1， 64）
-
-        print("x type:", type(x), x.shape)
 
         #
         x = [F.relu(conv(x)).squeeze(3) for conv in convs]  # [(N, Co, W), ...]*len(Ks)
