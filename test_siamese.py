@@ -42,7 +42,7 @@ def evaluation_siamese_model(data, all_bug_data, params):
         for i, batch in enumerate(batches):
             distances = []
             for j, compare_batch in enumerate(compare_batches):
-                print()
+                print("compartive times:", j)
 
                 pad_msg, pad_code, label = batch
                 pad_msg_compare, pad_code_compare, label_compare = compare_batch
@@ -58,7 +58,8 @@ def evaluation_siamese_model(data, all_bug_data, params):
 
                 if torch.cuda.is_available():
                     output1, output2 = model.forward(pad_msg, pad_code, pad_msg_compare, pad_code_compare)
-
+                    print("output1 length", output1.size())
+                    print("output2 length", output2.size())
                     eucledian_distance = F.pairwise_distance(output1, output2)
                     eucledian_distance = eucledian_distance.cpu().numpy()
 
