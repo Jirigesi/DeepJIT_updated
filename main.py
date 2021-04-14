@@ -79,11 +79,9 @@ if __name__ == '__main__':
         dictionary = pickle.load(open(params.dictionary_data, 'rb'))   
         dict_msg, dict_code = dictionary
 
-        print("msgs type:", type(msgs[0]))
-
         pad_msg = padding_data(data=msgs, dictionary=dict_msg, params=params, type='msg')        
         pad_code = padding_data(data=codes, dictionary=dict_code, params=params, type='code')
-        print("bug_msgs type:", type(bug_msgs[0]))
+
         pad_bug_msg = padding_data(data=bug_msgs, dictionary=dict_msg, params=params, type='msg')
         pad_bug_code = padding_data(data=bug_codes, dictionary=dict_code, params=params, type='code')
 
