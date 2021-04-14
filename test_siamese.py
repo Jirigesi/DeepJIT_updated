@@ -54,6 +54,8 @@ def evaluation_siamese_model(data, all_bug_data, params):
 
             if torch.cuda.is_available():
                 predict = model.forward(pad_msg, pad_code, pad_msg_compare, pad_code_compare)
+                print("Predict type:", type(predict))
+
                 predict = predict.cuda().detach().numpy().tolist()
             else:
                 predict = model.forward(pad_msg, pad_code)
