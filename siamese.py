@@ -56,7 +56,7 @@ class DeepJITSiamese(nn.Module):
         x = x.reshape(n_batch * n_file, x.shape[2], x.shape[0])
 
         # apply cnn 2d for each line in a commit code
-        x = self.forward_msg(x=x, convs=convs_line)
+        x = self.forward_msg(x=x, convs=convs_line) # get to here !
 
         # apply cnn 2d for each file in a commit code
         x = x.reshape(n_batch, n_file, self.args.num_filters * len(self.args.filter_sizes))
@@ -68,7 +68,7 @@ class DeepJITSiamese(nn.Module):
         x_msg = self.forward_msg(x_msg, self.convs_msg)
 
         x_code = self.embed_code(code)
-        x_code = self.forward_code(x_code, self.convs_code_line, self.convs_code_file)
+        x_code = self.forward_code(x_code, self.convs_code_line, self.convs_code_file)  # here !
 
         x_commit = torch.cat((x_msg, x_code), 1)
         x_commit = self.dropout(x_commit)

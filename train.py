@@ -34,6 +34,7 @@ def train_model(data, params):
         total_loss = 0
         # building batches for training model
         batches = mini_batches_train(X_msg=data_pad_msg, X_code=data_pad_code, Y=data_labels)
+
         for i, (batch) in enumerate(tqdm(batches)):
             pad_msg, pad_code, labels = batch
             if torch.cuda.is_available():                
