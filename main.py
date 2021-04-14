@@ -5,6 +5,8 @@ import numpy as np
 from evaluation import evaluation_model
 from train import train_model
 from trainSiamese import train_model_siamese
+from test_siamese import evaluation_siamese_model
+
 
 def read_args():
     parser = argparse.ArgumentParser()
@@ -16,7 +18,8 @@ def read_args():
 
     # Predicting our data
     parser.add_argument('-predict', action='store_true', help='predicting testing data')
-    parser.add_argument('-pred_data', type=str, help='the directory of our testing data')    
+    parser.add_argument('-pred_data', type=str, help='the directory of our testing data')
+    parser.add_argument('-buggy_data', type=str, help='the directory of buggy data')
 
     # Predicting our data
     parser.add_argument('-load_model', type=str, help='loading our model')
@@ -65,6 +68,8 @@ if __name__ == '__main__':
 
     elif params.predict is True:
         data = pickle.load(open(params.pred_data, 'rb'))
+        bug_data = pickle.load(open(params.buggy_data, 'rb'))
+
         ids, labels, msgs, codes = data 
         labels = np.array(labels)        
 
@@ -75,7 +80,7 @@ if __name__ == '__main__':
         pad_code = padding_data(data=codes, dictionary=dict_code, params=params, type='code')
         
         data = (pad_msg, pad_code, labels, dict_msg, dict_code)
-        evaluation_model(data=data, params=params)
+        evaluation_siamese_model(data=data, all_bug_data=bug_data, params=params)
     else:
         print('--------------------------------------------------------------------------------')
         print('--------------------------Something wrongs with your command--------------------')

@@ -9,7 +9,7 @@ import sklearn.metrics as metrics
 import numpy as np
 
 
-def evaluation_model(data, all_bug_data, params):
+def evaluation_siamese_model(data, all_bug_data, params):
     pad_msg, pad_code, labels, dict_msg, dict_code = data
     pad_msg_compare, pad_code_compare, labels_compare, dict_msg_compare, dict_code_compare = all_bug_data
 
@@ -40,6 +40,7 @@ def evaluation_model(data, all_bug_data, params):
         for i, (batch, compare_batch) in enumerate(tqdm(zip(batches, compare_batches))):
             pad_msg, pad_code, label = batch
             pad_msg_compare, pad_code_compare, label_compare = batch
+
             if torch.cuda.is_available():
                 pad_msg, pad_code, labels = torch.tensor(pad_msg).cuda(), torch.tensor(
                     pad_code).cuda(), torch.cuda.FloatTensor(label)
@@ -59,25 +60,32 @@ def evaluation_model(data, all_bug_data, params):
             all_predict += predict
             all_label += labels.tolist()
 
-    auc_score = roc_auc_score(y_true=all_label,  y_score=all_predict)
-    print('Test data -- AUC score:', auc_score)
+    # write data in a file.
+    with open('siamese_result.txt', 'w') as filehandle:
+        for listitem in all_predict:
+            filehandle.write('%s\n' % listitem)
 
-    fpr, tpr, threshold = metrics.roc_curve(all_label, all_predict)
-    i = np.arange(len(tpr))
-    roc = pd.DataFrame({'tf': pd.Series(tpr - (1 - fpr), index=i), 'threshold': pd.Series(threshold, index=i)})
-    roc_t = roc.iloc[(roc.tf - 0).abs().argsort()[:1]]
-    threshold = list(roc_t['threshold'])[0]
-    prediction = []
-    for predict_possible in all_predict:
-        if predict_possible >= threshold:
-            prediction.append(1)
-        else:
-            prediction.append(0)
 
-    df = pd.DataFrame(all_label, columns=["actual"])
-    df["prediction_prob"] = all_predict
-    df["prediction"] = prediction
-    df.to_csv('jiri_result.csv', index=False)
 
-    print(classification_report(all_label, prediction))
+    # auc_score = roc_auc_score(y_true=all_label,  y_score=all_predict)
+    # print('Test data -- AUC score:', auc_score)
+    #
+    # fpr, tpr, threshold = metrics.roc_curve(all_label, all_predict)
+    # i = np.arange(len(tpr))
+    # roc = pd.DataFrame({'tf': pd.Series(tpr - (1 - fpr), index=i), 'threshold': pd.Series(threshold, index=i)})
+    # roc_t = roc.iloc[(roc.tf - 0).abs().argsort()[:1]]
+    # threshold = list(roc_t['threshold'])[0]
+    # prediction = []
+    # for predict_possible in all_predict:
+    #     if predict_possible >= threshold:
+    #         prediction.append(1)
+    #     else:
+    #         prediction.append(0)
+    #
+    # df = pd.DataFrame(all_label, columns=["actual"])
+    # df["prediction_prob"] = all_predict
+    # df["prediction"] = prediction
+    # df.to_csv('jiri_result.csv', index=False)
+    #
+    # print(classification_report(all_label, prediction))
 
