@@ -40,8 +40,9 @@ def evaluation_siamese_model(data, all_bug_data, params):
         all_predict, all_label = list(), list()
 
         for i, batch in enumerate(tqdm(batches)):
+            distances = []
             for j, compare_batch in enumerate(tqdm(compare_batches)):
-                distances = []
+
                 pad_msg, pad_code, label = batch
                 pad_msg_compare, pad_code_compare, label_compare = compare_batch
 
