@@ -13,10 +13,10 @@ import torch.nn.functional as F
 def evaluation_siamese_model(data, all_bug_data, params):
     pad_msg, pad_code, labels, dict_msg, dict_code = data
 
-    pad_msg_compare, pad_code_compare, labels_compare = all_bug_data
+
 
     batches = mini_batches_test(X_msg=pad_msg, X_code=pad_code, Y=labels)
-    compare_batches = mini_batches_test(X_msg=pad_msg_compare, X_code=pad_code_compare, Y=labels_compare)
+
 
     params.vocab_msg, params.vocab_code = len(dict_msg), len(dict_code)
 
@@ -37,6 +37,9 @@ def evaluation_siamese_model(data, all_bug_data, params):
     model.load_state_dict(torch.load(params.load_model))
 
     model.eval()  # eval mode (batchnorm uses moving mean/variance instead of mini-batch mean/variance)
+
+    pad_msg_compare, pad_code_compare, labels_compare = all_bug_data
+    compare_batches = mini_batches_test(X_msg=pad_msg_compare, X_code=pad_code_compare, Y=labels_compare)
 
     with torch.no_grad():
         all_predict, all_label = list(), list()
