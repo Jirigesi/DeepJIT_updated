@@ -39,9 +39,9 @@ def evaluation_siamese_model(data, all_bug_data, params):
     with torch.no_grad():
         all_predict, all_label = list(), list()
 
-        for i, batch in enumerate(tqdm(batches)):
+        for i, batch in enumerate(batches):
             distances = []
-            for j, compare_batch in enumerate(tqdm(compare_batches)):
+            for j, compare_batch in enumerate(compare_batches):
 
                 pad_msg, pad_code, label = batch
                 pad_msg_compare, pad_code_compare, label_compare = compare_batch
