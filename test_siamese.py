@@ -64,7 +64,7 @@ def evaluation_siamese_model(data, all_bug_data, params):
 
                 for i, x in enumerate(eucledian_distance):
                     if i > len(distances) - 1:
-                        distances[i] = [x]
+                        distances.append([x])
                     else:
                         distances[i].append(x)
                 print(distances)
