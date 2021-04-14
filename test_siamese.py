@@ -7,6 +7,7 @@ import pandas as pd
 from sklearn.metrics import classification_report
 import sklearn.metrics as metrics
 import numpy as np
+import torch.nn.functional as F
 
 
 def evaluation_siamese_model(data, all_bug_data, params):
@@ -53,11 +54,13 @@ def evaluation_siamese_model(data, all_bug_data, params):
                     labels).float()
 
             if torch.cuda.is_available():
-                predict = model.forward(pad_msg, pad_code, pad_msg_compare, pad_code_compare)
-                print("Predict type:", type(predict))
-                print(len(predict[0]))
-                print(predict)
+                output1,output2 = model.forward(pad_msg, pad_code, pad_msg_compare, pad_code_compare)
 
+                eucledian_distance = F.pairwise_distance(output1, output2)
+
+                print(type(eucledian_distance), len(eucledian_distance))
+
+                predict = model.forward(pad_msg, pad_code, pad_msg_compare, pad_code_compare)
                 predict = predict.cuda().detach().numpy().tolist()
             else:
                 predict = model.forward(pad_msg, pad_code)
