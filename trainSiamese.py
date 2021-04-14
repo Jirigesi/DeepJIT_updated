@@ -59,9 +59,9 @@ def train_model_siamese(data, params):
             temp_labels = []
             for i in range(len(labels1)):
                 if labels1[i] == labels2[i]:
-                    temp_labels.append[1]
+                    temp_labels.append(1)
                 else:
-                    temp_labels.append[0]
+                    temp_labels.append(0)
 
             temp_labels = torch.cuda.FloatTensor(temp_labels)
 
