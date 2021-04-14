@@ -60,7 +60,7 @@ def evaluation_siamese_model(data, all_bug_data, params):
 
                 print("eucledian_distance")
                 print(type(eucledian_distance), len(eucledian_distance))
-                print(eucledian_distance)
+                print(eucledian_distance.size())
 
                 predict = model.forward(pad_msg, pad_code, pad_msg_compare, pad_code_compare)
                 predict = predict.cuda().detach().numpy().tolist()
