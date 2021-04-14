@@ -73,7 +73,7 @@ if __name__ == '__main__':
         ids, labels, msgs, codes = data
         labels = np.array(labels)
 
-        bug_labels, bug_msgs, bug_codes = bug_data
+        bug_msgs, bug_codes, bug_labels = bug_data  # pay attention to order here
         bug_labels = np.array(bug_labels)
 
         dictionary = pickle.load(open(params.dictionary_data, 'rb'))   
