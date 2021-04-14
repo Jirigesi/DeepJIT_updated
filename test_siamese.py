@@ -11,16 +11,8 @@ import numpy as np
 
 def evaluation_siamese_model(data, all_bug_data, params):
     pad_msg, pad_code, labels, dict_msg, dict_code = data
-    print("pad_msg type:", type(pad_msg))
-    print("pad_msg length", pad_msg.shape)
-    pad_msg_compare, pad_code_compare, labels_compare = all_bug_data
-    # pad_msg_compare = np.array(pad_msg_compare)
-    print("pad_msg_compare type:", type(pad_msg_compare))
-    print("pad_msg_compare length", pad_msg_compare.shape)
 
-    """
-    Here the shape of testing data is not same, because my data need padding! 
-    """
+    pad_msg_compare, pad_code_compare, labels_compare = all_bug_data
 
     batches = mini_batches_test(X_msg=pad_msg, X_code=pad_code, Y=labels)
     compare_batches = mini_batches_test(X_msg=pad_msg_compare, X_code=pad_code_compare, Y=labels_compare)
@@ -44,6 +36,7 @@ def evaluation_siamese_model(data, all_bug_data, params):
     model.load_state_dict(torch.load(params.load_model))
 
     model.eval()  # eval mode (batchnorm uses moving mean/variance instead of mini-batch mean/variance)
+
     with torch.no_grad():
         all_predict, all_label = list(), list()
         for i, (batch, compare_batch) in enumerate(tqdm(zip(batches, compare_batches))):
@@ -61,7 +54,7 @@ def evaluation_siamese_model(data, all_bug_data, params):
 
             if torch.cuda.is_available():
                 predict = model.forward(pad_msg, pad_code, pad_msg_compare, pad_code_compare)
-                predict = predict.cpu().detach().numpy().tolist()
+                predict = predict.cuda().detach().numpy().tolist()
             else:
                 predict = model.forward(pad_msg, pad_code)
                 predict = predict.detach().numpy().tolist()
