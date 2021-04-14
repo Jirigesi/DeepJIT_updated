@@ -36,7 +36,7 @@ class DeepJITSiamese(nn.Module):
         # note that we can use this function for commit code line to get the information of the line\
         # print("x shape[0], [1]: ", x.shape[0], x.shape[1], x.shape[2], x.shape[0])
         x = x.unsqueeze(1)  # (N, Ci, W, D)
-        print("x type:", type(x))
+        print("x type:", type(x), x.shape)
 
         # jiri made change here from 3 to 1
         x = [F.relu(conv(x)).squeeze(3) for conv in convs]  # [(N, Co, W), ...]*len(Ks)
