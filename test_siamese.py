@@ -39,9 +39,9 @@ def evaluation_siamese_model(data, all_bug_data, params):
     with torch.no_grad():
         all_predict, all_label = list(), list()
 
-        for i, batch in enumerate(batches):
+        for j, compare_batch in enumerate(compare_batches):
             distances = []
-            for j, compare_batch in enumerate(compare_batches):
+            for i, batch in enumerate(batches):
                 print("batches times", i)
                 print("compartive times:", j)
 
