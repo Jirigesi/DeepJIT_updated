@@ -42,6 +42,7 @@ def evaluation_siamese_model(data, all_bug_data, params):
         for i, batch in enumerate(batches):
             distances = []
             for j, compare_batch in enumerate(compare_batches):
+                print()
 
                 pad_msg, pad_code, label = batch
                 pad_msg_compare, pad_code_compare, label_compare = compare_batch
@@ -56,14 +57,14 @@ def evaluation_siamese_model(data, all_bug_data, params):
                         labels).float()
 
                 if torch.cuda.is_available():
-                    output1,output2 = model.forward(pad_msg, pad_code, pad_msg_compare, pad_code_compare)
+                    output1, output2 = model.forward(pad_msg, pad_code, pad_msg_compare, pad_code_compare)
 
                     eucledian_distance = F.pairwise_distance(output1, output2)
                     eucledian_distance = eucledian_distance.cpu().numpy()
 
-                    for i, x in enumerate(eucledian_distance):
+                    for index, x in enumerate(eucledian_distance):
                         try:
-                            distances[i].append(x)
+                            distances[index].append(x)
                         except IndexError:
                             distances.append([x])
 
@@ -72,9 +73,9 @@ def evaluation_siamese_model(data, all_bug_data, params):
 
                     break
 
-                else:
-                    predict = model.forward(pad_msg, pad_code)
-                    predict = predict.detach().numpy().tolist()
+                # else:
+                #     predict = model.forward(pad_msg, pad_code)
+                #     predict = predict.detach().numpy().tolist()
 
     #         all_predict += predict
     #         all_label += labels.tolist()
