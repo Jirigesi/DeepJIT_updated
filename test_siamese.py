@@ -11,7 +11,7 @@ import numpy as np
 
 def evaluation_siamese_model(data, all_bug_data, params):
     pad_msg, pad_code, labels, dict_msg, dict_code = data
-    pad_msg_compare, pad_code_compare, labels_compare, dict_msg_compare, dict_code_compare = all_bug_data
+    pad_msg_compare, pad_code_compare, labels_compare = all_bug_data
 
     batches = mini_batches_test(X_msg=pad_msg, X_code=pad_code, Y=labels)
     compare_batches = mini_batches_test(X_msg=pad_msg_compare, X_code=pad_code_compare, Y=labels_compare)
