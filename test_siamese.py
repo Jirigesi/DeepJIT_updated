@@ -36,7 +36,7 @@ def evaluation_siamese_model(data, all_bug_data, params):
     with torch.no_grad():
         all_distances, all_label = list(), list()
 
-        for i, batch in enumerate(batches):
+        for i, batch in enumerate(tqdm(batches)):
             distances = []
             pad_msg, pad_code, label = batch
             batch_size = len(pad_msg)
@@ -77,6 +77,8 @@ def evaluation_siamese_model(data, all_bug_data, params):
                             distances[index].append(distance_value)
                         except IndexError:
                             distances.append([distance_value])
+
+                compare_times -= 1
 
             all_distances.extend(distances)
 
