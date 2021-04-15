@@ -37,7 +37,7 @@ def evaluation_siamese_model(data, all_bug_data, params):
     compare_batches = mini_batches_test(X_msg=pad_msg_compare, X_code=pad_code_compare, Y=labels_compare)
 
     with torch.no_grad():
-        all_predict, all_label = list(), list()
+        all_distances, all_label = list(), list()
 
         for i, batch in enumerate(batches):
             distances = []
@@ -72,9 +72,12 @@ def evaluation_siamese_model(data, all_bug_data, params):
                     except IndexError:
                         distances.append([distance_value])
 
-                print(distances)
-                print(len(distances[0]))
-                print(len(distances))
+            all_distances.extend(distances)
+
+    print(all_distances)
+    print(len(all_distances))
+
+
 
                 # else:
                 #     predict = model.forward(pad_msg, pad_code)
