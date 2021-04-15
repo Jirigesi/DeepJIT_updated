@@ -108,11 +108,13 @@ def evaluation_siamese_model(data, all_bug_data, params):
 
     df = pd.DataFrame(final_labels, columns=['labels'])
 
-    sorted_alldistances = [x.sort() for x in all_distances]
+    sorted_alldistances = [sorted(x) for x in all_distances]
+    print(sorted_alldistances)
+    # print(all_distances)
 
     df["distances"] = sorted_alldistances
-    print(sorted_alldistances)
-    print(all_distances)
+
+
 
     # with open('all_distances_15.pkl', 'wb') as f:
     #     pickle.dump(df, f)
