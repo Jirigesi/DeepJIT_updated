@@ -40,9 +40,9 @@ def evaluation_siamese_model(data, all_bug_data, params):
         all_predict, all_label = list(), list()
 
         for i, batch in enumerate(batches):
-
+            distances = []
             for j, compare_batch in enumerate(compare_batches):
-                distances = []
+
                 print("batches times", i)
                 print("compartive times:", j)
 
