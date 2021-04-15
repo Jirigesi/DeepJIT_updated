@@ -42,7 +42,7 @@ def evaluation_siamese_model(data, all_bug_data, params):
             pad_msg, pad_code, label = batch
             batch_size = len(pad_msg)
 
-            compare_times = 40
+            compare_times = 80
             while compare_times > 0:
 
                 pad_msg_compare, pad_code_compare, labels_compare = all_bug_data
