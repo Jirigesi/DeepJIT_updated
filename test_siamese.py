@@ -8,7 +8,7 @@ from sklearn.metrics import classification_report
 import sklearn.metrics as metrics
 import numpy as np
 import torch.nn.functional as F
-import random
+import pickle
 
 
 def evaluation_siamese_model(data, all_bug_data, params):
@@ -76,7 +76,7 @@ def evaluation_siamese_model(data, all_bug_data, params):
                         labels).float()
 
                 if torch.cuda.is_available():
-                    # todo: need to fix here, since lost last batch
+
                     if len(pad_msg) == len(pad_msg_compare):
 
                         output1, output2 = model.forward(pad_msg, pad_code, pad_msg_compare, pad_code_compare)
@@ -95,6 +95,10 @@ def evaluation_siamese_model(data, all_bug_data, params):
 
     print(all_distances)
     print(len(all_distances))
+
+    with open('all_distances.pkl', 'wb') as f:
+        pickle.dump(all_distances, f)
+
 
 
 
