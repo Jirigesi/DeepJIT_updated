@@ -58,11 +58,12 @@ def evaluation_siamese_model(data, all_bug_data, params):
                         labels).float()
 
                 if torch.cuda.is_available():
-                    output1, output2 = model.forward(pad_msg, pad_code, pad_msg_compare, pad_code_compare)
-                    print("output1 length", output1.size())
-                    print("output2 length", output2.size())
-                    eucledian_distance = F.pairwise_distance(output1, output2)
-                    eucledian_distance = eucledian_distance.cpu().numpy()
+                    if len(pad_msg) == len(pad_msg_compare):
+                        output1, output2 = model.forward(pad_msg, pad_code, pad_msg_compare, pad_code_compare)
+                        print("output1 length", output1.size())
+                        print("output2 length", output2.size())
+                        eucledian_distance = F.pairwise_distance(output1, output2)
+                        eucledian_distance = eucledian_distance.cpu().numpy()
 
                 for index, distance_value in enumerate(eucledian_distance):
                     try:
@@ -72,8 +73,6 @@ def evaluation_siamese_model(data, all_bug_data, params):
 
                 print(distances)
                 print(len(distances))
-
-                break
 
                 # else:
                 #     predict = model.forward(pad_msg, pad_code)
