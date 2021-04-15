@@ -72,6 +72,7 @@ def evaluation_siamese_model(data, all_bug_data, params):
                         distances.append([distance_value])
 
                 print(distances)
+                print(len(distances[0]))
                 print(len(distances))
 
                 # else:
