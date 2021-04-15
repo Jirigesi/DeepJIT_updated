@@ -111,7 +111,7 @@ def evaluation_siamese_model(data, all_bug_data, params):
     fpr, tpr, threshold = metrics.roc_curve(final_labels, preds_max)
 
     roc_auc = metrics.auc(fpr, tpr)
-    print(roc_auc)
+    print('Test data -- AUC score:', roc_auc)
 
 
 
