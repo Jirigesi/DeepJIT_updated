@@ -94,11 +94,12 @@ def evaluation_siamese_model(data, all_bug_data, params):
     for distance in all_distances:
         max_value = max(distance)
         preds_max.append(max_value)
+
         avg_value = sum(distance)/len(distance)
         preds_avg.append(avg_value)
 
 
-    fpr, tpr, threshold = metrics.roc_curve(final_labels, preds_avg)
+    fpr, tpr, threshold = metrics.roc_curve(final_labels, preds_max)
 
     roc_auc = metrics.auc(fpr, tpr)
     print('Test data -- AUC score:', roc_auc)
