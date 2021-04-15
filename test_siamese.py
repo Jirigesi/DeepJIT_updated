@@ -107,13 +107,15 @@ def evaluation_siamese_model(data, all_bug_data, params):
     print('Test data -- AUC score:', roc_auc)
 
     df = pd.DataFrame(final_labels, columns=['labels'])
-    sorted_alldistances = [x.sort(reverse=True) for x in all_distances]
+
+    sorted_alldistances = [x.sort() for x in all_distances]
+
     df["distances"] = sorted_alldistances
     print(sorted_alldistances)
     print(all_distances)
 
-    with open('all_distances_15.pkl', 'wb') as f:
-        pickle.dump(df, f)
+    # with open('all_distances_15.pkl', 'wb') as f:
+    #     pickle.dump(df, f)
 
 
     # # write data in a file.
