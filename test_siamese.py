@@ -116,8 +116,8 @@ def evaluation_siamese_model(data, all_bug_data, params):
 
 
 
-    # with open('all_distances_15.pkl', 'wb') as f:
-    #     pickle.dump(df, f)
+    with open('all_distances_15.pkl', 'wb') as f:
+        pickle.dump(df, f)
 
 
     # # write data in a file.
