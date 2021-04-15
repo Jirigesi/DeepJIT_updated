@@ -42,14 +42,18 @@ def evaluation_siamese_model(data, all_bug_data, params):
             pad_msg, pad_code, label = batch
             batch_size = len(pad_msg)
 
-            compare_times = 5
-            while compare_times > 0:
+            compare_times = 10
+            while compare_times > 1:
 
                 pad_msg_compare, pad_code_compare, labels_compare = all_bug_data
-                shuffler = np.random.permutation(len(pad_msg_compare))
-                pad_msg_compare = pad_msg_compare[shuffler]
-                pad_code_compare = pad_code_compare[shuffler]
-                labels_compare = labels_compare[shuffler]
+                pad_msg_compare, pad_code_compare, labels_compare = np.roll(pad_msg_compare, compare_times), \
+                                                                                   np.roll(pad_code_compare, compare_times), \
+                                                                                   np.roll(labels_compare, compare_times)
+
+                # shuffler = np.random.permutation(len(pad_msg_compare))
+                # pad_msg_compare = pad_msg_compare[shuffler]
+                # pad_code_compare = pad_code_compare[shuffler]
+                # labels_compare = labels_compare[shuffler]
 
                 compare_batches = mini_batches_test(X_msg=pad_msg_compare, X_code=pad_code_compare, Y=labels_compare, mini_batch_size=batch_size)
 

@@ -42,26 +42,27 @@ def train_model_siamese(data, params):
     for epoch in range(1, params.num_epochs + 1):
         # building batches for training model
         batches1 = mini_batches_train(X_msg=data_pad_msg, X_code=data_pad_code, Y=data_labels)
+        pad_msg1, pad_code1, labels1 = batch1
+        if torch.cuda.is_available():
+            pad_msg1, pad_code1, labels1 = torch.tensor(pad_msg1).cuda(), torch.tensor(
+                pad_code1).cuda(), torch.cuda.FloatTensor(labels1)
+        else:
+            pad_msg1, pad_code1, labels1 = torch.tensor(pad_msg1).long(), torch.tensor(pad_code1).long(), torch.tensor(
+                labels1).float()
 
-        for _ in range(1, 50):
+        for _ in range(1, 100): # calculate 100 pairs for each training data
             data_pad_msg_compare, data_pad_code_compare, data_labels_compare = np.roll(data_pad_msg_compare, _), \
                                                                                np.roll(data_pad_code_compare, _), \
                                                                                np.roll(data_labels_compare, _)
-
             batches2 = mini_batches_train(X_msg=data_pad_msg_compare, X_code=data_pad_code_compare, Y=data_labels_compare)
 
             for i, (batch1, batch2) in enumerate(tqdm(zip(batches1, batches2))):
-                pad_msg1, pad_code1, labels1 = batch1
                 pad_msg2, pad_code2, labels2 = batch2
 
                 if torch.cuda.is_available():
-                    pad_msg1, pad_code1, labels1 = torch.tensor(pad_msg1).cuda(), torch.tensor(
-                        pad_code1).cuda(), torch.cuda.FloatTensor(labels1)
                     pad_msg2, pad_code2, labels2 = torch.tensor(pad_msg2).cuda(), torch.tensor(
                         pad_code2).cuda(), torch.cuda.FloatTensor(labels2)
                 else:
-                    pad_msg1, pad_code1, labels1 = torch.tensor(pad_msg1).long(), torch.tensor(pad_code1).long(), torch.tensor(
-                        labels1).float()
                     pad_msg2, pad_code2, labels2 = torch.tensor(pad_msg2).long(), torch.tensor(
                         pad_code2).long(), torch.tensor(labels2).float()
 
