@@ -8,6 +8,7 @@ from sklearn.metrics import classification_report
 import sklearn.metrics as metrics
 import numpy as np
 import torch.nn.functional as F
+from statistics import mean
 
 
 def evaluation_siamese_model(data, all_bug_data, params):
@@ -89,11 +90,11 @@ def evaluation_siamese_model(data, all_bug_data, params):
     for distance in all_distances:
         max_value = max(distance)
         preds_max.append(max_value)
-        # avg_value = mean(distance)
-        # preds_avg.append(avg_value)
+        avg_value = mean(distance)
+        preds_avg.append(avg_value)
 
 
-    fpr, tpr, threshold = metrics.roc_curve(final_labels, preds_max)
+    fpr, tpr, threshold = metrics.roc_curve(final_labels, preds_avg)
 
     roc_auc = metrics.auc(fpr, tpr)
     print('Test data -- AUC score:', roc_auc)
