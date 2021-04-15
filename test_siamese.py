@@ -13,6 +13,7 @@ import pickle
 
 def evaluation_siamese_model(data, all_bug_data, params):
     pad_msg, pad_code, labels, dict_msg, dict_code = data
+    final_labels = labels
     batches = mini_batches_test(X_msg=pad_msg, X_code=pad_code, Y=labels)
     params.vocab_msg, params.vocab_code = len(dict_msg), len(dict_code)
 
@@ -97,7 +98,7 @@ def evaluation_siamese_model(data, all_bug_data, params):
     # with open('all_distances.pkl', 'wb') as f:
     #     pickle.dump(all_distances, f)
 
-    labels = labels.tolist()
+    final_labels = final_labels.tolist()
     preds_max = []
     preds_avg = []
     for distance in all_distances:
@@ -107,7 +108,7 @@ def evaluation_siamese_model(data, all_bug_data, params):
         # preds_avg.append(avg_value)
 
 
-    fpr, tpr, threshold = metrics.roc_curve(labels, preds_max)
+    fpr, tpr, threshold = metrics.roc_curve(final_labels, preds_max)
 
     roc_auc = metrics.auc(fpr, tpr)
     print(roc_auc)
