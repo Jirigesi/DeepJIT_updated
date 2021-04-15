@@ -50,7 +50,8 @@ def train_model_siamese(data, params):
             pad_msg1, pad_code1, labels1 = torch.tensor(pad_msg1).long(), torch.tensor(pad_code1).long(), torch.tensor(
                 labels1).float()
 
-        for _ in range(1, 100): # calculate 100 pairs for each training data
+        # calculate 100 pairs for each training data
+        for _ in range(1, 100):
             data_pad_msg_compare, data_pad_code_compare, data_labels_compare = np.roll(data_pad_msg_compare, _), \
                                                                                np.roll(data_pad_code_compare, _), \
                                                                                np.roll(data_labels_compare, _)
