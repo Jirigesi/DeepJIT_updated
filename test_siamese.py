@@ -8,6 +8,7 @@ from sklearn.metrics import classification_report
 import sklearn.metrics as metrics
 import numpy as np
 import torch.nn.functional as F
+import random
 
 
 def evaluation_siamese_model(data, all_bug_data, params):
@@ -34,6 +35,10 @@ def evaluation_siamese_model(data, all_bug_data, params):
     model.eval()  # eval mode (batchnorm uses moving mean/variance instead of mini-batch mean/variance)
 
     pad_msg_compare, pad_code_compare, labels_compare = all_bug_data
+    # need to shuffle here multiple times
+    all_bug_data_zip = list(zip(pad_msg_compare, pad_code_compare, labels_compare))
+    random.shuffle(all_bug_data_zip)
+    pad_msg_compare, pad_code_compare, labels_compare = zip(*all_bug_data_zip)
     compare_batches = mini_batches_test(X_msg=pad_msg_compare, X_code=pad_code_compare, Y=labels_compare)
 
     with torch.no_grad():
@@ -41,12 +46,11 @@ def evaluation_siamese_model(data, all_bug_data, params):
 
         for i, batch in enumerate(batches):
             distances = []
-            for j, compare_batch in enumerate(compare_batches):
+            pad_msg, pad_code, label = batch
 
+            for j, compare_batch in enumerate(compare_batches):
                 print("batches times", i)
                 print("compartive times:", j)
-
-                pad_msg, pad_code, label = batch
                 pad_msg_compare, pad_code_compare, label_compare = compare_batch
 
                 if torch.cuda.is_available():
@@ -59,7 +63,9 @@ def evaluation_siamese_model(data, all_bug_data, params):
                         labels).float()
 
                 if torch.cuda.is_available():
+                    # todo: need to fix here, since lost last batch
                     if len(pad_msg) == len(pad_msg_compare):
+
                         output1, output2 = model.forward(pad_msg, pad_code, pad_msg_compare, pad_code_compare)
                         print("output1 length", output1.size())
                         print("output2 length", output2.size())
