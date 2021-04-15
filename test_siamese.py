@@ -34,7 +34,7 @@ def evaluation_siamese_model(data, all_bug_data, params):
 
     model.eval()  # eval mode (batchnorm uses moving mean/variance instead of mini-batch mean/variance)
 
-    pad_msg_compare, pad_code_compare, labels_compare = all_bug_data
+    # pad_msg_compare, pad_code_compare, labels_compare = all_bug_data
     # need to shuffle here multiple times
     # all_bug_data_zip = list(zip(pad_msg_compare, pad_code_compare, labels_compare))
     # random.shuffle(all_bug_data_zip)
@@ -50,11 +50,12 @@ def evaluation_siamese_model(data, all_bug_data, params):
             pad_msg, pad_code, label = batch
             batch_size = len(pad_msg)
 
-            all_bug_data_zip = list(zip(pad_msg_compare, pad_code_compare, labels_compare))
-            random.shuffle(all_bug_data_zip)
-            pad_msg_compare, pad_code_compare, labels_compare = zip(*all_bug_data_zip)
-            pad_msg_compare, pad_code_compare, labels_compare = np.array(pad_msg_compare), np.array(
-                pad_code_compare), np.array(labels_compare)
+            pad_msg_compare, pad_code_compare, labels_compare = all_bug_data
+            shuffler = np.random.permutation(len(pad_msg_compare))
+            pad_msg_compare = pad_msg_compare[shuffler]
+            pad_code_compare = pad_code_compare[shuffler]
+            labels_compare = labels_compare[shuffler]
+
             print("need to batch size:", batch_size)
             compare_batches = mini_batches_test(X_msg=pad_msg_compare, X_code=pad_code_compare, Y=labels_compare, mini_batch_size=batch_size)
 
