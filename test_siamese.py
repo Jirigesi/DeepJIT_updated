@@ -93,11 +93,24 @@ def evaluation_siamese_model(data, all_bug_data, params):
 
             all_distances.extend(distances)
 
-    print(all_distances)
-    print(len(all_distances))
 
-    with open('all_distances.pkl', 'wb') as f:
-        pickle.dump(all_distances, f)
+    # with open('all_distances.pkl', 'wb') as f:
+    #     pickle.dump(all_distances, f)
+
+    labels = labels.tolist()
+    preds_max = []
+    preds_avg = []
+    for distance in all_distances:
+        max_value = max(distance)
+        preds_max.append(max_value)
+        # avg_value = mean(distance)
+        # preds_avg.append(avg_value)
+
+
+    fpr, tpr, threshold = metrics.roc_curve(labels, preds_max)
+
+    roc_auc = metrics.auc(fpr, tpr)
+    print(roc_auc)
 
 
 
