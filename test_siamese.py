@@ -90,7 +90,7 @@ def evaluation_siamese_model(data, all_bug_data, params):
     for distance in all_distances:
         max_value = max(distance)
         preds_max.append(max_value)
-        avg_value = mean(distance)
+        avg_value = sum(distance)/len(distance)
         preds_avg.append(avg_value)
 
 
