@@ -8,7 +8,7 @@ from sklearn.metrics import classification_report
 import sklearn.metrics as metrics
 import numpy as np
 import torch.nn.functional as F
-from statistics import mean
+import pickle
 
 
 def evaluation_siamese_model(data, all_bug_data, params):
@@ -42,7 +42,7 @@ def evaluation_siamese_model(data, all_bug_data, params):
             pad_msg, pad_code, label = batch
             batch_size = len(pad_msg)
 
-            compare_times = 5
+            compare_times = 10
             while compare_times > 0:
 
                 pad_msg_compare, pad_code_compare, labels_compare = all_bug_data
@@ -98,11 +98,20 @@ def evaluation_siamese_model(data, all_bug_data, params):
         avg_value = sum(distance)/len(distance)
         preds_avg.append(avg_value)
 
+        sorted_values = distance.sort(reverse=True)
+
 
     fpr, tpr, threshold = metrics.roc_curve(final_labels, preds_max)
 
     roc_auc = metrics.auc(fpr, tpr)
     print('Test data -- AUC score:', roc_auc)
+
+    df = pd.DataFrame(final_labels, columns=['labels'])
+    sorted_alldistances = [x.sort(reverse=True) for x in all_distances]
+    df["distances"] = sorted_alldistances
+
+    with open('all_distances_15.pkl', 'wb') as f:
+        pickle.dump(df, f)
 
 
     # # write data in a file.
@@ -133,6 +142,5 @@ def evaluation_siamese_model(data, all_bug_data, params):
     # df.to_csv('jiri_result.csv', index=False)
     #
     # print(classification_report(all_label, prediction))
-    # with open('all_distances.pkl', 'wb') as f:
-    #     pickle.dump(all_distances, f)
+
 
