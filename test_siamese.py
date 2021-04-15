@@ -99,6 +99,8 @@ def evaluation_siamese_model(data, all_bug_data, params):
     with open('all_distances_15.pkl', 'wb') as f:
         pickle.dump(df, f)
 
+    print("Saved new results!")
+
 
     # # write data in a file.
     # with open('siamese_result.txt', 'w') as filehandle:
