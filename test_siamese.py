@@ -89,32 +89,12 @@ def evaluation_siamese_model(data, all_bug_data, params):
 
     final_labels = final_labels.tolist()
 
-    preds_max = []
-    preds_avg = []
-    for distance in all_distances:
-        max_value = max(distance)
-        preds_max.append(max_value)
-
-        avg_value = sum(distance)/len(distance)
-        preds_avg.append(avg_value)
-
-        sorted_values = distance.sort(reverse=True)
-
-
-    fpr, tpr, threshold = metrics.roc_curve(final_labels, preds_max)
-
-    roc_auc = metrics.auc(fpr, tpr)
-    print('Test data -- AUC score:', roc_auc)
-
     df = pd.DataFrame(final_labels, columns=['labels'])
 
     sorted_alldistances = [sorted(set(x), reverse=True) for x in all_distances]
-    print(sorted_alldistances)
+    # print(sorted_alldistances)
     # print(all_distances)
-
     df["distances"] = sorted_alldistances
-
-
 
     with open('all_distances_15.pkl', 'wb') as f:
         pickle.dump(df, f)
