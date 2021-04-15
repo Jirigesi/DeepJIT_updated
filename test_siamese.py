@@ -48,11 +48,21 @@ def evaluation_siamese_model(data, all_bug_data, params):
         for i, batch in enumerate(batches):
             distances = []
             pad_msg, pad_code, label = batch
+            batch_size = len(pad_msg)
+
+            all_bug_data_zip = list(zip(pad_msg_compare, pad_code_compare, labels_compare))
+            random.shuffle(all_bug_data_zip)
+            pad_msg_compare, pad_code_compare, labels_compare = zip(*all_bug_data_zip)
+            pad_msg_compare, pad_code_compare, labels_compare = np.array(pad_msg_compare), np.array(
+                pad_code_compare), np.array(labels_compare)
+            compare_batches = mini_batches_test(X_msg=pad_msg_compare, X_code=pad_code_compare, Y=labels_compare, mini_batch_size=batch_size)
 
             for j, compare_batch in enumerate(compare_batches):
                 print("batches times", i)
                 print("compartive times:", j)
                 pad_msg_compare, pad_code_compare, label_compare = compare_batch
+                print("batch size:", len(pad_msg))
+                print("compared batch size:", len(pad_msg_compare))
 
                 if torch.cuda.is_available():
                     pad_msg, pad_code, labels = torch.tensor(pad_msg).cuda(), torch.tensor(
