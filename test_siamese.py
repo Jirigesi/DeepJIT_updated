@@ -36,11 +36,11 @@ def evaluation_siamese_model(data, all_bug_data, params):
 
     pad_msg_compare, pad_code_compare, labels_compare = all_bug_data
     # need to shuffle here multiple times
-    all_bug_data_zip = list(zip(pad_msg_compare, pad_code_compare, labels_compare))
-    random.shuffle(all_bug_data_zip)
-    pad_msg_compare, pad_code_compare, labels_compare = zip(*all_bug_data_zip)
-    pad_msg_compare, pad_code_compare, labels_compare = np.array(pad_msg_compare), np.array(pad_code_compare), np.array(labels_compare)
-    compare_batches = mini_batches_test(X_msg=pad_msg_compare, X_code=pad_code_compare, Y=labels_compare)
+    # all_bug_data_zip = list(zip(pad_msg_compare, pad_code_compare, labels_compare))
+    # random.shuffle(all_bug_data_zip)
+    # pad_msg_compare, pad_code_compare, labels_compare = zip(*all_bug_data_zip)
+    # pad_msg_compare, pad_code_compare, labels_compare = np.array(pad_msg_compare), np.array(pad_code_compare), np.array(labels_compare)
+    # compare_batches = mini_batches_test(X_msg=pad_msg_compare, X_code=pad_code_compare, Y=labels_compare)
 
     with torch.no_grad():
         all_distances, all_label = list(), list()
@@ -55,6 +55,7 @@ def evaluation_siamese_model(data, all_bug_data, params):
             pad_msg_compare, pad_code_compare, labels_compare = zip(*all_bug_data_zip)
             pad_msg_compare, pad_code_compare, labels_compare = np.array(pad_msg_compare), np.array(
                 pad_code_compare), np.array(labels_compare)
+            print("need to batch size:", batch_size)
             compare_batches = mini_batches_test(X_msg=pad_msg_compare, X_code=pad_code_compare, Y=labels_compare, mini_batch_size=batch_size)
 
             for j, compare_batch in enumerate(compare_batches):
