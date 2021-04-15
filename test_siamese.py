@@ -82,11 +82,8 @@ def evaluation_siamese_model(data, all_bug_data, params):
 
             all_distances.extend(distances)
 
-
-    # with open('all_distances.pkl', 'wb') as f:
-    #     pickle.dump(all_distances, f)
-
     final_labels = final_labels.tolist()
+
     preds_max = []
     preds_avg = []
     for distance in all_distances:
@@ -102,15 +99,6 @@ def evaluation_siamese_model(data, all_bug_data, params):
     print('Test data -- AUC score:', roc_auc)
 
 
-
-
-                # else:
-                #     predict = model.forward(pad_msg, pad_code)
-                #     predict = predict.detach().numpy().tolist()
-
-    #         all_predict += predict
-    #         all_label += labels.tolist()
-    #
     # # write data in a file.
     # with open('siamese_result.txt', 'w') as filehandle:
     #     for listitem in all_predict:
@@ -139,4 +127,6 @@ def evaluation_siamese_model(data, all_bug_data, params):
     # df.to_csv('jiri_result.csv', index=False)
     #
     # print(classification_report(all_label, prediction))
+    # with open('all_distances.pkl', 'wb') as f:
+    #     pickle.dump(all_distances, f)
 

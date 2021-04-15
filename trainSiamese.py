@@ -5,10 +5,12 @@ from utils import mini_batches_train, save
 import torch.nn as nn
 import os, datetime
 from contrastiveLoss import ContrastiveLoss
+import numpy as np
 
 
 def train_model_siamese(data, params):
     data_pad_msg, data_pad_code, data_labels, dict_msg, dict_code = data
+    data_pad_msg_compare, data_pad_code_compare, data_labels_compare, dict_msg, dict_code = data
 
     # set up parameters
     params.cuda = (not params.no_cuda) and torch.cuda.is_available()
@@ -40,11 +42,18 @@ def train_model_siamese(data, params):
     for epoch in range(1, params.num_epochs + 1):
         # building batches for training model
         batches1 = mini_batches_train(X_msg=data_pad_msg, X_code=data_pad_code, Y=data_labels)
-        for _ in range(30):
-            batches2 = mini_batches_train(X_msg=data_pad_msg, X_code=data_pad_code, Y=data_labels)
+
+        for _ in range(len(data_labels)):
+            data_pad_msg_compare, data_pad_code_compare, data_labels_compare = np.roll(data_pad_msg_compare, _), \
+                                                                               np.roll(data_pad_code_compare, _), \
+                                                                               np.roll(data_labels_compare, _)
+
+            batches2 = mini_batches_train(X_msg=data_pad_msg_compare, X_code=data_pad_code_compare, Y=data_labels_compare)
+
             for i, (batch1, batch2) in enumerate(tqdm(zip(batches1, batches2))):
                 pad_msg1, pad_code1, labels1 = batch1
                 pad_msg2, pad_code2, labels2 = batch2
+
                 if torch.cuda.is_available():
                     pad_msg1, pad_code1, labels1 = torch.tensor(pad_msg1).cuda(), torch.tensor(
                         pad_code1).cuda(), torch.cuda.FloatTensor(labels1)
@@ -57,16 +66,16 @@ def train_model_siamese(data, params):
                         pad_code2).long(), torch.tensor(labels2).float()
 
                 temp_labels = []
-                for i in range(len(labels1)):
-                    if labels1[i] == labels2[i]:
+                for idx in range(len(labels1)):
+                    if labels1[idx] == labels2[idx]:
                         temp_labels.append(1)
                     else:
                         temp_labels.append(0)
+
                 temp_labels = torch.cuda.FloatTensor(temp_labels)
 
                 optimizer.zero_grad()
                 output1, output2 = model.forward(pad_msg1, pad_code1, pad_msg2, pad_code2)
-                # print("output1 shape:", output1.shape)
                 loss_contrastive = criterion(output1, output2, temp_labels)
                 loss_contrastive.backward()
                 optimizer.step()
