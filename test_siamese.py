@@ -108,7 +108,7 @@ def evaluation_siamese_model(data, all_bug_data, params):
 
     df = pd.DataFrame(final_labels, columns=['labels'])
 
-    sorted_alldistances = [sorted(set(x)) for x in all_distances]
+    sorted_alldistances = [sorted(set(x), reverse=True) for x in all_distances]
     print(sorted_alldistances)
     # print(all_distances)
 
