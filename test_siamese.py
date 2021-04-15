@@ -8,7 +8,6 @@ from sklearn.metrics import classification_report
 import sklearn.metrics as metrics
 import numpy as np
 import torch.nn.functional as F
-import pickle
 
 
 def evaluation_siamese_model(data, all_bug_data, params):
@@ -32,16 +31,7 @@ def evaluation_siamese_model(data, all_bug_data, params):
     if torch.cuda.is_available():
         model = model.cuda()
     model.load_state_dict(torch.load(params.load_model))
-
     model.eval()  # eval mode (batchnorm uses moving mean/variance instead of mini-batch mean/variance)
-
-    # pad_msg_compare, pad_code_compare, labels_compare = all_bug_data
-    # need to shuffle here multiple times
-    # all_bug_data_zip = list(zip(pad_msg_compare, pad_code_compare, labels_compare))
-    # random.shuffle(all_bug_data_zip)
-    # pad_msg_compare, pad_code_compare, labels_compare = zip(*all_bug_data_zip)
-    # pad_msg_compare, pad_code_compare, labels_compare = np.array(pad_msg_compare), np.array(pad_code_compare), np.array(labels_compare)
-    # compare_batches = mini_batches_test(X_msg=pad_msg_compare, X_code=pad_code_compare, Y=labels_compare)
 
     with torch.no_grad():
         all_distances, all_label = list(), list()
@@ -51,46 +41,42 @@ def evaluation_siamese_model(data, all_bug_data, params):
             pad_msg, pad_code, label = batch
             batch_size = len(pad_msg)
 
-            pad_msg_compare, pad_code_compare, labels_compare = all_bug_data
-            shuffler = np.random.permutation(len(pad_msg_compare))
-            pad_msg_compare = pad_msg_compare[shuffler]
-            pad_code_compare = pad_code_compare[shuffler]
-            labels_compare = labels_compare[shuffler]
+            compare_times = 5
+            while compare_times > 0:
 
-            print("need to batch size:", batch_size)
-            compare_batches = mini_batches_test(X_msg=pad_msg_compare, X_code=pad_code_compare, Y=labels_compare, mini_batch_size=batch_size)
+                pad_msg_compare, pad_code_compare, labels_compare = all_bug_data
+                shuffler = np.random.permutation(len(pad_msg_compare))
+                pad_msg_compare = pad_msg_compare[shuffler]
+                pad_code_compare = pad_code_compare[shuffler]
+                labels_compare = labels_compare[shuffler]
 
-            for j, compare_batch in enumerate(compare_batches):
-                print("batches times", i)
-                print("compartive times:", j)
-                pad_msg_compare, pad_code_compare, label_compare = compare_batch
-                print("batch size:", len(pad_msg))
-                print("compared batch size:", len(pad_msg_compare))
+                compare_batches = mini_batches_test(X_msg=pad_msg_compare, X_code=pad_code_compare, Y=labels_compare, mini_batch_size=batch_size)
 
-                if torch.cuda.is_available():
-                    pad_msg, pad_code, labels = torch.tensor(pad_msg).cuda(), torch.tensor(
-                        pad_code).cuda(), torch.cuda.FloatTensor(label)
-                    pad_msg_compare, pad_code_compare, label_compare = torch.tensor(pad_msg_compare).cuda(), torch.tensor(
-                        pad_code_compare).cuda(), torch.cuda.FloatTensor(label_compare)
-                else:
-                    pad_msg, pad_code, label = torch.tensor(pad_msg).long(), torch.tensor(pad_code).long(), torch.tensor(
-                        labels).float()
+                for j, compare_batch in enumerate(compare_batches):
+                    pad_msg_compare, pad_code_compare, label_compare = compare_batch
 
-                if torch.cuda.is_available():
+                    if torch.cuda.is_available():
+                        pad_msg, pad_code, labels = torch.tensor(pad_msg).cuda(), torch.tensor(
+                            pad_code).cuda(), torch.cuda.FloatTensor(label)
+                        pad_msg_compare, pad_code_compare, label_compare = torch.tensor(pad_msg_compare).cuda(), torch.tensor(
+                            pad_code_compare).cuda(), torch.cuda.FloatTensor(label_compare)
+                    else:
+                        pad_msg, pad_code, label = torch.tensor(pad_msg).long(), torch.tensor(pad_code).long(), torch.tensor(
+                            labels).float()
 
-                    if len(pad_msg) == len(pad_msg_compare):
+                    if torch.cuda.is_available():
 
-                        output1, output2 = model.forward(pad_msg, pad_code, pad_msg_compare, pad_code_compare)
-                        print("output1 length", output1.size())
-                        print("output2 length", output2.size())
-                        eucledian_distance = F.pairwise_distance(output1, output2)
-                        eucledian_distance = eucledian_distance.cpu().numpy()
+                        if len(pad_msg) == len(pad_msg_compare):
 
-                for index, distance_value in enumerate(eucledian_distance):
-                    try:
-                        distances[index].append(distance_value)
-                    except IndexError:
-                        distances.append([distance_value])
+                            output1, output2 = model.forward(pad_msg, pad_code, pad_msg_compare, pad_code_compare)
+                            eucledian_distance = F.pairwise_distance(output1, output2)
+                            eucledian_distance = eucledian_distance.cpu().numpy()
+
+                    for index, distance_value in enumerate(eucledian_distance):
+                        try:
+                            distances[index].append(distance_value)
+                        except IndexError:
+                            distances.append([distance_value])
 
             all_distances.extend(distances)
 
