@@ -33,7 +33,7 @@ def read_args():
     parser.add_argument('-embedding_dim', type=int, default=64, help='the dimension of embedding vector')
     # parser.add_argument('-filter_sizes', type=str, default='1, 2, 3', help='the filter size of convolutional layers')
     parser.add_argument('-filter_sizes', type=str, default='1', help='the filter size of convolutional layers')
-    parser.add_argument('-num_filters', type=int, default=16, help='the number of filters') # before 64
+    parser.add_argument('-num_filters', type=int, default=64, help='the number of filters') # before 64
     parser.add_argument('-hidden_units', type=int, default=512, help='the number of nodes in hidden layers')
     parser.add_argument('-dropout_keep_prob', type=float, default=0.5, help='dropout for training DeepJIT')
     parser.add_argument('-l2_reg_lambda', type=float, default=1e-5, help='regularization rate')
