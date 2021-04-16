@@ -42,6 +42,7 @@ def train_model_siamese(data, params):
     for epoch in range(1, params.num_epochs + 1):
         # building batches for training model
         batches1 = mini_batches_train(X_msg=data_pad_msg, X_code=data_pad_code, Y=data_labels)
+
         for i, batch1 in enumerate(tqdm(batches1)):
 
             pad_msg1, pad_code1, labels1 = batch1
@@ -53,7 +54,7 @@ def train_model_siamese(data, params):
                     labels1).float()
 
             # calculate 100 pairs for each training data
-            for _ in range(1, 50):
+            for _ in range(1, 20):
                 data_pad_msg_compare, data_pad_code_compare, data_labels_compare = np.roll(data_pad_msg_compare, _), \
                                                                                    np.roll(data_pad_code_compare, _), \
                                                                                    np.roll(data_labels_compare, _)
