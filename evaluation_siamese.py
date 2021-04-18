@@ -10,7 +10,6 @@ import numpy as np
 import torch.nn.functional as F
 import pickle
 
-
 def evaluation_siamese_model(data, all_bug_data, params):
     pad_msg, pad_code, labels, dict_msg, dict_code = data
     final_labels = labels
@@ -39,10 +38,11 @@ def evaluation_siamese_model(data, all_bug_data, params):
 
         for i, batch in enumerate(tqdm(batches)):
             distances = []
+
             pad_msg, pad_code, label = batch
             batch_size = len(pad_msg)
 
-            compare_times = 30
+            compare_times = 30   # this variable can be changed to get better results
             while compare_times > 0:
 
                 pad_msg_compare, pad_code_compare, labels_compare = all_bug_data
@@ -99,6 +99,50 @@ def evaluation_siamese_model(data, all_bug_data, params):
         pickle.dump(df, f)
 
     print("Saved new results!")
+
+
+    ############################
+    data = pickle.load(open('all_distances_15.pkl', 'rb'))
+    prdictions = data['distances']
+
+    max_value = []
+    two_sum = []
+    negative_four = []
+    negative_three = []
+    min_value = []
+    averge = []
+    negative_five = []
+    second_value = []
+    third_value = []
+    forth_value = []
+    fifith_value = []
+
+    for values in data['distances']:
+        max_value.append(-values[0])
+        second_value.append(-values[1])
+        third_value.append(-values[2])
+        forth_value.append(-values[3])
+        fifith_value.append(-values[4])
+        two_sum.append(-values[0] - values[1])
+        negative_three.append(-values[0] - values[1] - values[2])  # - values[2] - values[2]- values[3]-values[4]
+        negative_four.append(-values[0] - values[1] - values[2] - values[3])
+        negative_five.append(-values[0] - values[1] - values[2] - values[3] - values[4])
+        min_value.append(-values[-1])
+        averge.append(-sum(values) / len(values))
+
+    def calculate_AUC(data, predic_possibles, idx):
+        fpr, tpr, threshold = metrics.roc_curve(data['labels'], predic_possibles)
+        roc_auc = metrics.auc(fpr, tpr)
+        print(f"Test data -- AUC score {idx}: {roc_auc}")
+
+
+    collections = [max_value, second_value, third_value, forth_value, fifith_value, two_sum,
+                   negative_three, negative_four, negative_five, min_value, averge]
+
+    for idx, collection in enumerate(collections):
+        calculate_AUC(data, collection, idx)
+
+
 
 
     # # write data in a file.
