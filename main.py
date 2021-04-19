@@ -38,8 +38,8 @@ def read_args():
     parser.add_argument('-dropout_keep_prob', type=float, default=0.5, help='dropout for training DeepJIT')
     parser.add_argument('-l2_reg_lambda', type=float, default=1e-5, help='regularization rate')
     parser.add_argument('-learning_rate', type=float, default=1e-4, help='learning rate')
-    parser.add_argument('-batch_size', type=int, default=16, help='batch size')
-    parser.add_argument('-num_epochs', type=int, default=40, help='the number of epochs')
+    parser.add_argument('-batch_size', type=int, default=64, help='batch size')
+    parser.add_argument('-num_epochs', type=int, default=25, help='the number of epochs')
     parser.add_argument('-save-dir', type=str, default='snapshot', help='where to save the snapshot')    
 
     # CUDA
