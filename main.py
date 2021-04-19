@@ -89,7 +89,7 @@ if __name__ == '__main__':
         data = (pad_msg, pad_code, labels, dict_msg, dict_code)
         # bug_data = (pad_bug_msg, pad_bug_code, bug_labels)
 
-        evaluation_model(data=data, params=params)
+        evaluation_model(data=data, params=params, ids=ids)
 
         # evaluation_siamese_model(data=data, all_bug_data=bug_data, params=params)
     else:

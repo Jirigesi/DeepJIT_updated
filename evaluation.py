@@ -9,7 +9,7 @@ import sklearn.metrics as metrics
 import numpy as np
 
 
-def evaluation_model(data, params):
+def evaluation_model(data, params, ids):
     pad_msg, pad_code, labels, dict_msg, dict_code = data
     batches = mini_batches_test(X_msg=pad_msg, X_code=pad_code, Y=labels)
 
@@ -67,6 +67,7 @@ def evaluation_model(data, params):
     df = pd.DataFrame(all_label, columns=["actual"])
     df["prediction_prob"] = all_predict
     df["prediction"] = prediction
+    df["ids"] = ids
     df.to_csv('jiri_result.csv', index=False)
 
     print(classification_report(all_label, prediction))
