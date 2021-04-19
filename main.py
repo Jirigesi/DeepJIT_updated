@@ -6,6 +6,7 @@ from evaluation import evaluation_model
 from train import train_model
 from trainSiamese import train_model_siamese
 from evaluation_siamese import evaluation_siamese_model
+from evaluation import evaluation_model
 
 
 def read_args():
@@ -63,8 +64,8 @@ if __name__ == '__main__':
         pad_code = padding_data(data=codes, dictionary=dict_code, params=params, type='code')
     
         data = (pad_msg, pad_code, labels, dict_msg, dict_code)
-        # train_model(data=data, params=params)
-        train_model_siamese(data=data, params=params)
+        train_model(data=data, params=params)
+        # train_model_siamese(data=data, params=params)
 
     elif params.predict is True:
         data = pickle.load(open(params.pred_data, 'rb'))
@@ -87,8 +88,9 @@ if __name__ == '__main__':
 
         data = (pad_msg, pad_code, labels, dict_msg, dict_code)
         bug_data = (pad_bug_msg, pad_bug_code, bug_labels)
+        evaluation_model(data=data, params=params)
 
-        evaluation_siamese_model(data=data, all_bug_data=bug_data, params=params)
+        # evaluation_siamese_model(data=data, all_bug_data=bug_data, params=params)
     else:
         print('--------------------------------------------------------------------------------')
         print('--------------------------Something wrongs with your command--------------------')
