@@ -60,8 +60,8 @@ if __name__ == "__main__":
     commit_infor_file = (train_commit_infor_file, test_commit_infor_file)
     original_file = (train_original_file, test_original_file)
 
-    threshold = 48.04
-    characteristic = "Outwards_sum"
+    threshold = 6.04
+    characteristic = "Filecount"
 
     OS_threshold_dict = {
         "Filecount": 6.04,
