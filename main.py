@@ -1,12 +1,12 @@
 import argparse
 from padding import padding_data
 import pickle
-import numpy as np 
-from evaluation import evaluation_model
+import numpy as np
 from train import train_model
+from evaluation import evaluation_model
 from trainSiamese import train_model_siamese
 from evaluation_siamese import evaluation_siamese_model
-from evaluation import evaluation_model
+
 
 
 def read_args():
@@ -33,7 +33,7 @@ def read_args():
     # Number of parameters for PatchNet model
     parser.add_argument('-embedding_dim', type=int, default=64, help='the dimension of embedding vector')
     # parser.add_argument('-filter_sizes', type=str, default='1, 2, 3', help='the filter size of convolutional layers')
-    parser.add_argument('-filter_sizes', type=str, default='1', help='the filter size of convolutional layers')
+    parser.add_argument('-filter_sizes', type=str, default='2', help='the filter size of convolutional layers')
     parser.add_argument('-num_filters', type=int, default=64, help='the number of filters')
     parser.add_argument('-hidden_units', type=int, default=512, help='the number of nodes in hidden layers')
     parser.add_argument('-dropout_keep_prob', type=float, default=0.5, help='dropout for training DeepJIT')
