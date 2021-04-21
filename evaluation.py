@@ -7,6 +7,11 @@ import pandas as pd
 from sklearn.metrics import classification_report
 import sklearn.metrics as metrics
 import numpy as np
+from getSplitresults import resultsAnalyze
+from sklearn.metrics import recall_score
+from sklearn.metrics import precision_score
+from sklearn.metrics import f1_score
+import csv
 
 
 def evaluation_model(data, params, ids):
@@ -70,5 +75,37 @@ def evaluation_model(data, params, ids):
     df["ids"] = ids
     df.to_csv('jiri_result.csv', index=False)
 
-    print(classification_report(all_label, prediction))
+    print("----------total result----------")
+
+    total_precision = precision_score(df["actual"], df["prediction"])
+    total_recall = recall_score(df["actual"], df["prediction"])
+    total_f1 = f1_score(df["actual"], df["prediction"])
+
+
+    print("----------split result----------")
+    print("#####Easy part######")
+    test_commit_infor_file = "data/OS_result.csv"
+    test_result_file = "/Users/fjirigesi/Desktop/oversample.csv"
+    OS_threshold_dict = {
+        "Filecount": 6.04,
+        "Editcount": 143.3,
+        "MultilineCommentscount": 11.6,
+        "Inwards_sum": 15.51,
+        "Outwards_sum": 48.04
+    }
+
+    for character_name, threshold in OS_threshold_dict.items():
+
+        seperate_result = resultsAnalyze(test_result_file, test_commit_infor_file, threshold, character_name)
+        easy_roc_auc, easy_precision, easy_recall, easy_f1, hard_roc_auc, hard_precision, hard_recall, hard_f1 = seperate_result
+
+        with open('oversample_results.csv', mode='a') as result_file:
+            result_writer = csv.writer(result_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+
+            result_writer.writerow([character_name, auc_score, total_precision, total_recall, total_f1, easy_roc_auc,
+                                    easy_precision, easy_recall, easy_f1, hard_roc_auc, hard_precision, hard_recall, hard_f1])
+
+
+
+
 
