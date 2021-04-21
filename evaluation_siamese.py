@@ -31,7 +31,7 @@ def evaluation_siamese_model(data, all_bug_data, params):
     if torch.cuda.is_available():
         model = model.cuda()
     model.load_state_dict(torch.load(params.load_model))
-    model.eval()  # eval mode (batchnorm uses moving mean/variance instead of mini-batch mean/variance)
+    model.eval()  # eval mode (batch norm uses moving mean/variance instead of mini-batch mean/variance)
 
     with torch.no_grad():
         all_distances, all_label = list(), list()
