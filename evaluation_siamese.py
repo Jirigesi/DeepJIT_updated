@@ -9,6 +9,9 @@ import sklearn.metrics as metrics
 import numpy as np
 import torch.nn.functional as F
 import pickle
+from sklearn.metrics import recall_score
+from sklearn.metrics import precision_score
+from sklearn.metrics import f1_score
 
 def evaluation_siamese_model(data, all_bug_data, params):
     pad_msg, pad_code, labels, dict_msg, dict_code = data
@@ -127,7 +130,7 @@ def evaluation_siamese_model(data, all_bug_data, params):
 
     collections = [max_value, second_value, third_value, forth_value, fifth_value, two_sum,
                    negative_three, negative_four, negative_five, min_value, average]
-    auc_results= []
+    auc_results = []
 
     def calculate_AUC(data, predic_possibles, idx):
         fpr, tpr, threshold = metrics.roc_curve(data['labels'], predic_possibles)
@@ -139,6 +142,33 @@ def evaluation_siamese_model(data, all_bug_data, params):
         calculate_AUC(data, collection, idx)
 
     print(f"Test data -- highest AUC score {idx}: {max(auc_results)}")
+    max_index = auc_results.index(max(auc_results))
+
+    prediction_prob = collections[max_index]
+
+    auc_score = roc_auc_score(y_true=data['labels'], y_score=prediction_prob)
+    print('Test data -- AUC score:', auc_score)
+
+    fpr, tpr, threshold = metrics.roc_curve(all_label, prediction_prob)
+    i = np.arange(len(tpr))
+    roc = pd.DataFrame({'tf': pd.Series(tpr - (1 - fpr), index=i), 'threshold': pd.Series(threshold, index=i)})
+    roc_t = roc.iloc[(roc.tf - 0).abs().argsort()[:1]]
+    threshold = list(roc_t['threshold'])[0]
+    prediction = []
+    for predict_possible in prediction_prob:
+        if predict_possible >= threshold:
+            prediction.append(1)
+        else:
+            prediction.append(0)
+
+    precision = precision_score(df["actual"], df["prediction"])
+    recall = recall_score(df["actual"], df["prediction"])
+    f1 = f1_score(df["actual"], df["prediction"])
+
+    print("precision", precision)
+    print("recall", recall)
+    print("f1 score", f1)
+
 
 
 
