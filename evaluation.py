@@ -106,7 +106,4 @@ def evaluation_model(data, params, ids):
             result_writer.writerow([character_name, auc_score, total_precision, total_recall, total_f1, easy_roc_auc,
                                     easy_precision, easy_recall, easy_f1, hard_roc_auc, hard_precision, hard_recall, hard_f1])
 
-
-
-
-
+        print(f"Wrote results for {character_name}")
