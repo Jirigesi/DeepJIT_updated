@@ -161,9 +161,9 @@ def evaluation_siamese_model(data, all_bug_data, params):
         else:
             prediction.append(0)
 
-    precision = precision_score(df["actual"], df["prediction"])
-    recall = recall_score(df["actual"], df["prediction"])
-    f1 = f1_score(df["actual"], df["prediction"])
+    precision = precision_score(data['labels'], prediction)
+    recall = recall_score(data['labels'], prediction)
+    f1 = f1_score(data['labels'], prediction)
 
     print("precision", precision)
     print("recall", recall)
