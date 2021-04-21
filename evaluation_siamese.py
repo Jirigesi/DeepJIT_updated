@@ -149,7 +149,7 @@ def evaluation_siamese_model(data, all_bug_data, params):
     auc_score = roc_auc_score(y_true=data['labels'], y_score=prediction_prob)
     print('Test data -- AUC score:', auc_score)
 
-    fpr, tpr, threshold = metrics.roc_curve(all_label, prediction_prob)
+    fpr, tpr, threshold = metrics.roc_curve(data['labels'], prediction_prob)
     i = np.arange(len(tpr))
     roc = pd.DataFrame({'tf': pd.Series(tpr - (1 - fpr), index=i), 'threshold': pd.Series(threshold, index=i)})
     roc_t = roc.iloc[(roc.tf - 0).abs().argsort()[:1]]
