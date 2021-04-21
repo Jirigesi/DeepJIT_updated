@@ -73,7 +73,7 @@ def evaluation_model(data, params, ids):
     df["prediction_prob"] = all_predict
     df["prediction"] = prediction
     df["ids"] = ids
-    df.to_csv('jiri_result.csv', index=False)
+    df.to_csv('oversample_total.csv', index=False)
 
     print("----------total result----------")
 
@@ -81,11 +81,12 @@ def evaluation_model(data, params, ids):
     total_recall = recall_score(df["actual"], df["prediction"])
     total_f1 = f1_score(df["actual"], df["prediction"])
 
-
     print("----------split result----------")
     print("#####Easy part######")
+
     test_commit_infor_file = "data/OS_result.csv"
-    test_result_file = "/Users/fjirigesi/Desktop/oversample.csv"
+    test_result_file = "oversample_total.csv"
+
     OS_threshold_dict = {
         "Filecount": 6.04,
         "Editcount": 143.3,
