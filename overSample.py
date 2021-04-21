@@ -52,8 +52,9 @@ if __name__ == "__main__":
 
     over_data = (new_ids, new_labels, new_msgs, new_codes)
 
-    filename = "over_train_data.pkl"
+    filename = "data/over_train_data.pkl"
 
     with open(filename, 'wb') as handle:
         pickle.dump(over_data, handle)
+        print(f"Saved in {filename}")
 

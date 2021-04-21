@@ -88,18 +88,14 @@ def evaluation_siamese_model(data, all_bug_data, params):
             all_distances.extend(distances)
 
     final_labels = final_labels.tolist()
-
     df = pd.DataFrame(final_labels, columns=['labels'])
-
     sorted_alldistances = [sorted(set(x), reverse=True) for x in all_distances]
-
     df["distances"] = sorted_alldistances
 
     with open('all_distances_15.pkl', 'wb') as f:
         pickle.dump(df, f)
 
     print("Saved new results!")
-
 
     ############################
     data = pickle.load(open('all_distances_15.pkl', 'rb'))
@@ -140,36 +136,5 @@ def evaluation_siamese_model(data, all_bug_data, params):
     for idx, collection in enumerate(collections):
         calculate_AUC(data, collection, idx)
 
-
-
-
-    # # write data in a file.
-    # with open('siamese_result.txt', 'w') as filehandle:
-    #     for listitem in all_predict:
-    #         filehandle.write('%s\n' % listitem)
-
-
-
-    # auc_score = roc_auc_score(y_true=all_label,  y_score=all_predict)
-    # print('Test data -- AUC score:', auc_score)
-    #
-    # fpr, tpr, threshold = metrics.roc_curve(all_label, all_predict)
-    # i = np.arange(len(tpr))
-    # roc = pd.DataFrame({'tf': pd.Series(tpr - (1 - fpr), index=i), 'threshold': pd.Series(threshold, index=i)})
-    # roc_t = roc.iloc[(roc.tf - 0).abs().argsort()[:1]]
-    # threshold = list(roc_t['threshold'])[0]
-    # prediction = []
-    # for predict_possible in all_predict:
-    #     if predict_possible >= threshold:
-    #         prediction.append(1)
-    #     else:
-    #         prediction.append(0)
-    #
-    # df = pd.DataFrame(all_label, columns=["actual"])
-    # df["prediction_prob"] = all_predict
-    # df["prediction"] = prediction
-    # df.to_csv('jiri_result.csv', index=False)
-    #
-    # print(classification_report(all_label, prediction))
 
 
