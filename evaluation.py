@@ -73,7 +73,7 @@ def evaluation_model(data, params, ids):
     df["prediction_prob"] = all_predict
     df["prediction"] = prediction
     df["ids"] = ids
-    df.to_csv('oversample_total.csv', index=False)
+    df.to_csv('original_total.csv', index=False)
 
     print("----------total result----------")
 
@@ -85,7 +85,7 @@ def evaluation_model(data, params, ids):
     print("#####Easy part######")
 
     test_commit_infor_file = "data/OS_result.csv"
-    test_result_file = "oversample_total.csv"
+    test_result_file = "original_total.csv"
 
     OS_threshold_dict = {
         "Filecount": 6.04,
@@ -100,7 +100,7 @@ def evaluation_model(data, params, ids):
         seperate_result = resultsAnalyze(test_result_file, test_commit_infor_file, threshold, character_name)
         easy_roc_auc, easy_precision, easy_recall, easy_f1, hard_roc_auc, hard_precision, hard_recall, hard_f1 = seperate_result
 
-        with open('oversample_results.csv', mode='a') as result_file:
+        with open('original_results.csv', mode='a') as result_file:
             result_writer = csv.writer(result_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
             result_writer.writerow([character_name, auc_score, total_precision, total_recall, total_f1, easy_roc_auc,
