@@ -40,6 +40,7 @@ def train_model_siamese(data, params):
     iteration_number = 0
 
     for epoch in range(1, params.num_epochs + 1):
+        print(f"working on epoch {epoch} ...")
         # building batches for training model
         batches1 = mini_batches_train(X_msg=data_pad_msg, X_code=data_pad_code, Y=data_labels)
 
