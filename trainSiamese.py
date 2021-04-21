@@ -55,7 +55,7 @@ def train_model_siamese(data, params):
                     labels1).float()
 
             # calculate 100 pairs for each training data
-            for _ in range(1, 20):
+            for _ in range(1, 10):
                 data_pad_msg_compare, data_pad_code_compare, data_labels_compare = np.roll(data_pad_msg_compare, _), \
                                                                                    np.roll(data_pad_code_compare, _), \
                                                                                    np.roll(data_labels_compare, _)
