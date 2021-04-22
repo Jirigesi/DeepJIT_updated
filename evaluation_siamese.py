@@ -134,10 +134,16 @@ def evaluation_siamese_model(data, all_bug_data, params):
     auc_results = []
 
     def calculate_AUC(data, predic_possibles, idx):
-        fpr, tpr, threshold = metrics.roc_curve(np.nan_to_num(data['labels']), np.nan_to_num(predic_possibles))
-        roc_auc = metrics.auc(fpr, tpr)
-        auc_results.append(roc_auc)
-        print(f"Test data -- AUC score {idx}: {roc_auc}")
+        try:
+            fpr, tpr, threshold = metrics.roc_curve(data['labels'], predic_possibles)
+            roc_auc = metrics.auc(fpr, tpr)
+            auc_results.append(roc_auc)
+            print(f"Test data (No NaN) -- AUC score {idx}: {roc_auc}")
+        except:
+            fpr, tpr, threshold = metrics.roc_curve(np.nan_to_num(data['labels']), np.nan_to_num(predic_possibles))
+            roc_auc = metrics.auc(fpr, tpr)
+            auc_results.append(roc_auc)
+            print(f"Test data (Has NaN) -- AUC score {idx}: {roc_auc}")
 
     for idx, collection in enumerate(collections):
         # print("finish", idx)
