@@ -91,8 +91,8 @@ def evaluation_model(data, params, ids):
         # "Filecount": 6.04,
         # "Editcount": 143.3,
         # "MultilineCommentscount": 11.6,
-        "Inwards_sum": 15.51,
-        # "Outwards_sum": 48.04
+        # "Inwards_sum": 15.51,
+        "Outwards_sum": 48.04
     }
 
     for character_name, threshold in OS_threshold_dict.items():
