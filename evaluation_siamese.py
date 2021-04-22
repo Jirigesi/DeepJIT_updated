@@ -140,6 +140,7 @@ def evaluation_siamese_model(data, all_bug_data, params):
         # print(f"Test data -- AUC score {idx}: {roc_auc}")
 
     for idx, collection in enumerate(collections):
+        print("finish", idx)
         calculate_AUC(data, collection, idx)
 
     # print(f"Test data -- AUC score {idx}: {max(auc_results)}")
