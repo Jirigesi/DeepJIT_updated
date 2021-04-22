@@ -20,7 +20,7 @@ def read_args():
     # Predicting our data
     parser.add_argument('-predict', action='store_true', help='predicting testing data')
     parser.add_argument('-pred_data', type=str, help='the directory of our testing data')
-    parser.add_argument('-buggy_data', type=str, help='the directory of buggy data')
+    # parser.add_argument('-buggy_data', type=str, help='the directory of buggy data')
 
     # Predicting our data
     parser.add_argument('-load_model', type=str, help='loading our model')
@@ -64,18 +64,18 @@ if __name__ == '__main__':
         pad_code = padding_data(data=codes, dictionary=dict_code, params=params, type='code')
     
         data = (pad_msg, pad_code, labels, dict_msg, dict_code)
-        # train_model(data=data, params=params)
-        train_model_siamese(data=data, params=params)
+        train_model(data=data, params=params)
+        # train_model_siamese(data=data, params=params)
 
     elif params.predict is True:
         data = pickle.load(open(params.pred_data, 'rb'))
-        bug_data = pickle.load(open(params.buggy_data, 'rb'))
+        # bug_data = pickle.load(open(params.buggy_data, 'rb'))
 
         ids, labels, msgs, codes = data
         labels = np.array(labels)
 
-        bug_msgs, bug_codes, bug_labels = bug_data  # pay attention to order here
-        bug_labels = np.array(bug_labels)
+        # bug_msgs, bug_codes, bug_labels = bug_data  # pay attention to order here
+        # bug_labels = np.array(bug_labels)
 
         dictionary = pickle.load(open(params.dictionary_data, 'rb'))   
         dict_msg, dict_code = dictionary
@@ -83,15 +83,15 @@ if __name__ == '__main__':
         pad_msg = padding_data(data=msgs, dictionary=dict_msg, params=params, type='msg')
         pad_code = padding_data(data=codes, dictionary=dict_code, params=params, type='code')
 
-        pad_bug_msg = padding_data(data=bug_msgs, dictionary=dict_msg, params=params, type='msg')
-        pad_bug_code = padding_data(data=bug_codes, dictionary=dict_code, params=params, type='code')
+        # pad_bug_msg = padding_data(data=bug_msgs, dictionary=dict_msg, params=params, type='msg')
+        # pad_bug_code = padding_data(data=bug_codes, dictionary=dict_code, params=params, type='code')
 
         data = (pad_msg, pad_code, labels, dict_msg, dict_code)
-        bug_data = (pad_bug_msg, pad_bug_code, bug_labels)
+        # bug_data = (pad_bug_msg, pad_bug_code, bug_labels)
 
-        # evaluation_model(data=data, params=params, ids=ids)
+        evaluation_model(data=data, params=params, ids=ids)
 
-        evaluation_siamese_model(data=data, all_bug_data=bug_data, params=params)
+        # evaluation_siamese_model(data=data, all_bug_data=bug_data, params=params)
     else:
         print('--------------------------------------------------------------------------------')
         print('--------------------------Something wrongs with your command--------------------')
