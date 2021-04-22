@@ -90,8 +90,8 @@ def evaluation_model(data, params, ids):
     OS_threshold_dict = {
         # "Filecount": 6.04,
         # "Editcount": 143.3,
-        "MultilineCommentscount": 11.6,
-        # "Inwards_sum": 15.51,
+        # "MultilineCommentscount": 11.6,
+        "Inwards_sum": 15.51,
         # "Outwards_sum": 48.04
     }
 
