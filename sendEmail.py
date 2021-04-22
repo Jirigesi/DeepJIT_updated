@@ -9,15 +9,13 @@ def sendEmail(dirpath:str):
 
     receiver_email = "jirigesi@gmail.com"  # Enter receiver address
     subject = "Model Training Complete"
-    body = "Hey, your model training is finished.\n\n It is saved in path: " + dirpath
+    body = "Hey, your model training is finished.\n\n It is saved in path:\n " + dirpath
 
     message = """\
-        From: %s
-        To: %s
         Subject: %s
 
         %s
-        """ % (sender_email, ", ".join(receiver_email), subject, body)
+        """ % (subject, body)
 
 
     # Create a secure SSL context

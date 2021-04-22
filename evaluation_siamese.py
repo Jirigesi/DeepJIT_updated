@@ -1,3 +1,5 @@
+import csv
+
 from siamese import DeepJITSiamese
 from utils import mini_batches_test
 from sklearn.metrics import roc_auc_score
@@ -179,6 +181,14 @@ def evaluation_siamese_model(data, all_bug_data, params):
     print("precision", precision)
     print("recall", recall)
     print("f1 score", f1)
+
+    OS_threshold = ["Filecount", "Editcount", "MultilineCommentscount", "Inwards_sum", "Outwards_sum"]
+
+
+    with open('siameseHard_results.csv', mode='a') as result_file:
+        result_writer = csv.writer(result_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+
+        result_writer.writerow([OS_threshold[0], precision, recall, f1])
 
 
 
