@@ -6,6 +6,7 @@ import torch.nn as nn
 import os, datetime
 from contrastiveLoss import ContrastiveLoss
 import numpy as np
+from sendEmail import sendEmail
 
 
 def train_model_siamese(data, params):
@@ -93,4 +94,7 @@ def train_model_siamese(data, params):
 
         # print('Epoch %i / %i -- Total loss: %f' % (epoch, params.num_epochs, total_loss))
         save(model, params.save_dir, 'epoch', epoch)
+
+    # send notification email
+    sendEmail(params.save_dir)
 
