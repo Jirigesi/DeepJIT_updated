@@ -137,12 +137,12 @@ def evaluation_siamese_model(data, all_bug_data, params):
         fpr, tpr, threshold = metrics.roc_curve(data['labels'], predic_possibles)
         roc_auc = metrics.auc(fpr, tpr)
         auc_results.append(roc_auc)
-        print(f"Test data -- AUC score {idx}: {roc_auc}")
+        # print(f"Test data -- AUC score {idx}: {roc_auc}")
 
     for idx, collection in enumerate(collections):
         calculate_AUC(data, collection, idx)
 
-    print(f"Test data -- highest AUC score {idx}: {max(auc_results)}")
+    print(f"Test data -- AUC score {idx}: {max(auc_results)}")
     max_index = auc_results.index(max(auc_results))
 
     prediction_prob = collections[max_index]
