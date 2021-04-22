@@ -44,12 +44,16 @@ def resultsAnalyze(test_result_file: str, test_commit_infor_file: str, threshold
     easy_recall = recall_score(easy_actual, easy_prediction)
     easy_f1 = f1_score(easy_actual, easy_prediction)
 
-    fpr, tpr, threshold = metrics.roc_curve(hard_actual, hard_prediction)
-    hard_roc_auc = metrics.auc(fpr, tpr)
-
-    hard_precision = precision_score(hard_actual, hard_prediction)
-    hard_recall = recall_score(hard_actual, hard_prediction)
-    hard_f1 = f1_score(hard_actual, hard_prediction)
+    # fpr, tpr, threshold = metrics.roc_curve(hard_actual, hard_prediction)
+    # hard_roc_auc = metrics.auc(fpr, tpr)
+    #
+    # hard_precision = precision_score(hard_actual, hard_prediction)
+    # hard_recall = recall_score(hard_actual, hard_prediction)
+    # hard_f1 = f1_score(hard_actual, hard_prediction)
+    hard_roc_auc = 0
+    hard_precision = 0
+    hard_recall = 0
+    hard_f1 = 0
 
     return (easy_roc_auc,easy_precision,easy_recall, easy_f1, hard_roc_auc, hard_precision, hard_recall, hard_f1)
 
