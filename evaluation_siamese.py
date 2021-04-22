@@ -148,10 +148,13 @@ def evaluation_siamese_model(data, all_bug_data, params):
 
     prediction_prob = collections[max_index]
 
-    auc_score = roc_auc_score(y_true=data['labels'], y_score=prediction_prob)
+    data_label = np.nan_to_num(data['labels'])
+    prediction_prob = np.nan_to_num(prediction_prob)
+
+    auc_score = roc_auc_score(y_true=data_label, y_score=prediction_prob)
     print('Test data -- AUC score:', auc_score)
 
-    fpr, tpr, threshold = metrics.roc_curve(data['labels'], prediction_prob)
+    fpr, tpr, threshold = metrics.roc_curve(data_label, prediction_prob)
     i = np.arange(len(tpr))
     roc = pd.DataFrame({'tf': pd.Series(tpr - (1 - fpr), index=i), 'threshold': pd.Series(threshold, index=i)})
     roc_t = roc.iloc[(roc.tf - 0).abs().argsort()[:1]]
@@ -163,9 +166,9 @@ def evaluation_siamese_model(data, all_bug_data, params):
         else:
             prediction.append(0)
 
-    precision = precision_score(data['labels'], prediction)
-    recall = recall_score(data['labels'], prediction)
-    f1 = f1_score(data['labels'], prediction)
+    precision = precision_score(data_label, prediction)
+    recall = recall_score(data_label, prediction)
+    f1 = f1_score(data_label, prediction)
 
     print("precision", precision)
     print("recall", recall)
