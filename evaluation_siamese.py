@@ -188,7 +188,7 @@ def evaluation_siamese_model(data, all_bug_data, params):
     with open('siameseHard_results.csv', mode='a') as result_file:
         result_writer = csv.writer(result_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
-        result_writer.writerow([OS_threshold[1], precision, recall, f1])
+        result_writer.writerow([OS_threshold[1], auc_score, precision, recall, f1])
 
 
 
