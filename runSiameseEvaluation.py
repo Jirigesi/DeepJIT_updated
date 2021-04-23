@@ -14,7 +14,7 @@ test_File_path = "./splittedData/hard_Editcount_openstack_test.pkl"
 for model_path in model_path_list:
     for number in range(15, 26):
 
-        cmd = "python main.py -predict -pred_data " + test_File_path +"-buggy_data ./data/train_buggy.pkl -dictionary_data" \
+        cmd = "python main.py -predict -pred_data " + test_File_path + " " + "-buggy_data ./data/train_buggy.pkl -dictionary_data" \
               " ../deepjit_os/openstack_dict.pkl -load_model " + model_path + str(number) + ".pt"
         # Wait for 5 seconds
 
