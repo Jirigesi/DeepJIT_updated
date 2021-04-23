@@ -10,7 +10,7 @@ import time
 model_path_list = ["./snapshot/2021-04-23_13-50-10/epoch_"]
 
 
-test_File_path = "./splittedData/hard_Filecount_openstack_test.pkl"
+test_File_path = "./splittedData/hard_Editcount_openstack_test.pkl"
 
 for model_path in model_path_list:
     for number in range(15, 26):
