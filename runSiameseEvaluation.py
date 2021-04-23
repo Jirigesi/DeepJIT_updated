@@ -9,7 +9,7 @@ model_path_list = ["./snapshot/2021-04-22_10-25-57/epoch_", "./snapshot/2021-04-
                    "./snapshot/2021-04-23_12-02-18/epoch_"]
 
 
-test_File_path = "./splittedData/hard_MultilineCommentscount_openstack_test.pkl"
+test_File_path = "./splittedData/hard_Inwards_sum_openstack_test.pkl"
 
 for model_path in model_path_list:
     for number in range(15, 26):
