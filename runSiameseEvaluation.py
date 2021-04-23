@@ -2,7 +2,8 @@ import subprocess
 
 import time
 
-model_path = "./snapshot/2021-04-22_11-22-56/epoch_"
+# model_path = "./snapshot/2021-04-22_11-22-56/epoch_"
+model_path = "./snapshot/2021-04-22_15-36-56/epoch_"
 test_File_path = "./splittedData/hard_Filecount_openstack_test.pkl "
 for number in range(15, 26):
 
