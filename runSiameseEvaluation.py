@@ -7,7 +7,7 @@ import time
 # model_path = "./snapshot/2021-04-23_12-02-18/epoch_"
 # model_path_list = ["./snapshot/2021-04-22_10-25-57/epoch_", "./snapshot/2021-04-22_11-22-56/epoch_", "./snapshot/2021-04-22_15-36-56/epoch_",
 #                    "./snapshot/2021-04-23_12-02-18/epoch_"]
-model_path_list = ["./snapshot/2021-04-23_15-13-25/epoch_"]
+model_path_list = ["./snapshot/2021-04-23_15-13-25/epoch_", "./snapshot/2021-04-23_20-54-01/epoch_"]
 
 
 test_File_path = "./splittedData/hard_Editcount_openstack_test.pkl"
