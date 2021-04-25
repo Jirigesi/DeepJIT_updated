@@ -12,8 +12,11 @@ model_path_list = ["./snapshot/2021-04-24_12-46-04/epoch_", "./snapshot/2021-04-
                    "./snapshot/2021-04-24_19-31-41/epoch_", "./snapshot/2021-04-24_22-36-20/epoch_"]
 
 # test_File_path = "./splittedData/hard_Outwards_sum_openstack_test.pkl"
-test_File_path_list = ["./splittedData/hard_Filecount_openstack_test.pkl", "./splittedData/hard_Editcount_openstack_test.pkl",
-                       "hard_MultilineCommentscount_openstack_test.pkl","./splittedData/hard_Inwards_sum_openstack_test.pkl",
+
+# test_File_path_list = ["./splittedData/hard_Filecount_openstack_test.pkl", "./splittedData/hard_Editcount_openstack_test.pkl",
+#                        "./splittedData/hard_MultilineCommentscount_openstack_test.pkl","./splittedData/hard_Inwards_sum_openstack_test.pkl",
+#                        # "./splittedData/hard_Outwards_sum_openstack_test.pkl"]
+test_File_path_list = ["./splittedData/hard_MultilineCommentscount_openstack_test.pkl","./splittedData/hard_Inwards_sum_openstack_test.pkl",
                        "./splittedData/hard_Outwards_sum_openstack_test.pkl"]
 
 for test_File_path in test_File_path_list:
