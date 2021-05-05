@@ -80,12 +80,12 @@ if __name__ == '__main__':
         data = (pad_msg, pad_code, labels, dict_msg, dict_code)
 
         ####below is for siamese
-        bug_data = pickle.load(open(params.buggy_data, 'rb'))
-        bug_msgs, bug_codes, bug_labels = bug_data  # pay attention to order here
-        bug_labels = np.array(bug_labels)
-        pad_bug_msg = padding_data(data=bug_msgs, dictionary=dict_msg, params=params, type='msg')
-        pad_bug_code = padding_data(data=bug_codes, dictionary=dict_code, params=params, type='code')
-        bug_data = (pad_bug_msg, pad_bug_code, bug_labels)
+        # bug_data = pickle.load(open(params.buggy_data, 'rb'))
+        # bug_msgs, bug_codes, bug_labels = bug_data  # pay attention to order here
+        # bug_labels = np.array(bug_labels)
+        # pad_bug_msg = padding_data(data=bug_msgs, dictionary=dict_msg, params=params, type='msg')
+        # pad_bug_code = padding_data(data=bug_codes, dictionary=dict_code, params=params, type='code')
+        # bug_data = (pad_bug_msg, pad_bug_code, bug_labels)
 
         evaluation_model(data=data, params=params, ids=ids)
 
