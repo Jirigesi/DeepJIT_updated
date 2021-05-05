@@ -51,11 +51,11 @@ def splitData(commit_infor_file: str, original_file: str, threshold, characteris
 if __name__ == "__main__":
     #
     dataType = ['Train', 'Test']
-    train_commit_infor_file = "/Users/fjirigesi/Desktop/Jiri_openstack_train_infor.csv"
-    train_original_file = '/Users/fjirigesi/Downloads/deepjit_os/openstack_train.pkl'
+    train_commit_infor_file = "/Users/fjirigesi/Documents/DeepJIT_updated/raw_data/OS/train/Jiri_openstack_train_infor.csv"
+    train_original_file = '/Users/fjirigesi/Documents/DeepJIT_updated/raw_data/OS/train/openstack_train.pkl'
 
-    test_commit_infor_file = "/Users/fjirigesi/Documents/defect_prediction_unfaieness-main/DeepJIT/OSresults/OS_result.csv"
-    test_original_file = "/Users/fjirigesi/Downloads/deepjit_os/openstack_test.pkl"
+    test_commit_infor_file = "/Users/fjirigesi/Documents/DeepJIT_updated/raw_data/OS/test/OS_result.csv"
+    test_original_file = "/Users/fjirigesi/Documents/DeepJIT_updated/raw_data/OS/test/openstack_test.pkl"
 
     commit_infor_file = (train_commit_infor_file, test_commit_infor_file)
     original_file = (train_original_file, test_original_file)
