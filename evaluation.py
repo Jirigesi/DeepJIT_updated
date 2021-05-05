@@ -73,34 +73,42 @@ def evaluation_model(data, params, ids):
     df["prediction_prob"] = all_predict
     df["prediction"] = prediction
     df["ids"] = ids
-    df.to_csv('siameseEasy_total.csv', index=False)
+
+    df.to_csv('QT_all_result.csv', index=False)
 
     print("----------total result----------")
 
     total_precision = precision_score(df["actual"], df["prediction"])
     total_recall = recall_score(df["actual"], df["prediction"])
     total_f1 = f1_score(df["actual"], df["prediction"])
+    print("total_precision:", total_precision)
+    print("total_recall:", total_recall)
+    print("total_f1:", total_f1)
 
-    print("----------split result----------")
-    print("#####Easy part######")
+    test_commit_infor_file = "qt_data/Qt_results.csv"
+    test_result_file = "QT_all_result.csv"
 
-    test_commit_infor_file = "data/OS_result.csv"
-    test_result_file = "siameseEasy_total.csv"
-
-    OS_threshold_dict = {
-        # "Filecount": 6.04,
+    # OS_threshold_dict = {
+    #     # "Filecount": 6.04,
+    #     # "Editcount": 143.3,
+    #     # "MultilineCommentscount": 11.6,
+    #     # "Inwards_sum": 15.51,
+    #     "Outwards_sum": 48.04
+    # }
+    QT_threshold_dict = {
+        "Filecount": 16.01
         # "Editcount": 143.3,
         # "MultilineCommentscount": 11.6,
         # "Inwards_sum": 15.51,
-        "Outwards_sum": 48.04
+        # "Outwards_sum": 48.04
     }
 
-    for character_name, threshold in OS_threshold_dict.items():
+    for character_name, threshold in QT_threshold_dict.items():
 
         seperate_result = resultsAnalyze(test_result_file, test_commit_infor_file, threshold, character_name)
         easy_roc_auc, easy_precision, easy_recall, easy_f1, hard_roc_auc, hard_precision, hard_recall, hard_f1 = seperate_result
 
-        with open('siameseEasy_results.csv', mode='a') as result_file:
+        with open('qt_original_results.csv', mode='a') as result_file:
             result_writer = csv.writer(result_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
             result_writer.writerow([character_name, auc_score, total_precision, total_recall, total_f1, easy_roc_auc,
