@@ -22,7 +22,9 @@ def resultsAnalyze(test_result_file: str, test_commit_infor_file: str, threshold
     ids_test = result['ids']
 
     for index, id_ in enumerate(ids_test):
+        print(df.loc[df['Commit_Hash'] == id_, characteristic])
         value = df.loc[df['Commit_Hash'] == id_, characteristic].iloc[0]
+
         if value <= threshold:
             easy_ids.append(id_)
             easy_actual.append(result._get_value(index, 'actual'))
