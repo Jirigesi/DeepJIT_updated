@@ -20,18 +20,36 @@ def splitData(commit_infor_file: str, original_file: str, threshold, characteris
     hard_codes = []
 
     for index, id_ in enumerate(ids):
-        value = df.loc[df['Commit_Hash'] == id_, characteristic].iloc[0]
-        if value <= threshold:
-            easy_ids.append(id_)
-            easy_labels.append(labels[index])
-            easy_msgs.append(msgs[index])
-            easy_codes.append(codes[index])
+        try:
+            value = df.loc[df['Commit_Hash'] == id_, characteristic].iloc[0]
+        except:
+            # print(id_)
+            continue
 
-        else:
-            hard_ids.append(id_)
-            hard_labels.append(labels[index])
-            hard_msgs.append(msgs[index])
-            hard_codes.append(codes[index])
+        try:
+            if value <= threshold:
+                easy_ids.append(id_)
+                easy_labels.append(labels[index])
+                easy_msgs.append(msgs[index])
+                easy_codes.append(codes[index])
+
+            else:
+                hard_ids.append(id_)
+                hard_labels.append(labels[index])
+                hard_msgs.append(msgs[index])
+                hard_codes.append(codes[index])
+        except:
+            if int(float(value)) <= threshold:
+                easy_ids.append(id_)
+                easy_labels.append(labels[index])
+                easy_msgs.append(msgs[index])
+                easy_codes.append(codes[index])
+
+            else:
+                hard_ids.append(id_)
+                hard_labels.append(labels[index])
+                hard_msgs.append(msgs[index])
+                hard_codes.append(codes[index])
 
     easy_data = (easy_ids, easy_labels, easy_msgs, easy_codes)
     print("Splited the easy part: ", len(easy_ids))
@@ -51,28 +69,54 @@ def splitData(commit_infor_file: str, original_file: str, threshold, characteris
 if __name__ == "__main__":
     #
     dataType = ['Train', 'Test']
-    train_commit_infor_file = "/Users/fjirigesi/Documents/DeepJIT_updated/raw_data/OS/train/Jiri_openstack_train_infor.csv"
-    train_original_file = '/Users/fjirigesi/Documents/DeepJIT_updated/raw_data/OS/train/openstack_train.pkl'
+    """
+    OS data sources 
+    """
+    # train_commit_infor_file = "/Users/fjirigesi/Documents/DeepJIT_updated/raw_data/OS/train/Jiri_openstack_train_infor.csv"
+    # train_original_file = '/Users/fjirigesi/Documents/DeepJIT_updated/raw_data/OS/train/openstack_train.pkl'
+    #
+    # test_commit_infor_file = "/Users/fjirigesi/Documents/DeepJIT_updated/raw_data/OS/test/OS_result.csv"
+    # test_original_file = "/Users/fjirigesi/Documents/DeepJIT_updated/raw_data/OS/test/openstack_test.pkl"
+    #
+    # commit_infor_file = (train_commit_infor_file, test_commit_infor_file)
+    # original_file = (train_original_file, test_original_file)
 
-    test_commit_infor_file = "/Users/fjirigesi/Documents/DeepJIT_updated/raw_data/OS/test/OS_result.csv"
-    test_original_file = "/Users/fjirigesi/Documents/DeepJIT_updated/raw_data/OS/test/openstack_test.pkl"
+    """
+    QT data sources
+    """
+    train_commit_infor_file = "/Users/fjirigesi/Desktop/QT_train_infor.csv"
+    train_original_file = '/Users/fjirigesi/Downloads/qt_train.pkl'
+
+    test_commit_infor_file = "/Users/fjirigesi/Documents/defect_prediction_unfaieness-main/DeepJIT/QTresult/Qt_results.csv"
+    test_original_file = "/Users/fjirigesi/Downloads/qt_test.pkl"
 
     commit_infor_file = (train_commit_infor_file, test_commit_infor_file)
     original_file = (train_original_file, test_original_file)
 
-    threshold = 6.04
-    characteristic = "Filecount"
-
     OS_threshold_dict = {
-        "Filecount": 6.04,
-        "Editcount": 143.3,
-        "MultilineCommentscount": 11.6,
-        "Inwards_sum": 15.51,
-        "Outwards_sum": 48.04
+        "Filecount": 6.58,
+        "Editcount": 143.35,
+        "MultilineCommentscount": 8.84,
+        "Inwards_sum": 22.81,
+        "Inwards_avg": 5.5,
+        "Outwards_sum": 46.785,
+        "Outwards_avg": 11.055
+    }
+
+    QT_threshold_dict = {
+        # "Filecount": 13.225,
+        # "Editcount": 247.35,
+        # "MultilineCommentscount": 58.135,
+        # "Inwards_sum": 71.715,
+        # "Inwards_avg": 22.305,
+        # "Outwards_sum": 69.245,
+        "Outwards_avg": 15.30
     }
 
 
     for idx, datatype in enumerate(dataType):
-        print(f"Splitting {datatype} based on {characteristic}...")
-        splitData(commit_infor_file[idx], original_file[idx], threshold, characteristic)
-        print(f"Finish splitting {datatype}!")
+
+        for characteristic, threshold in QT_threshold_dict.items():
+            print(f"Splitting {datatype} based on {characteristic}...")
+            splitData(commit_infor_file[idx], original_file[idx], threshold, characteristic)
+            print(f"Finish splitting {datatype}!")

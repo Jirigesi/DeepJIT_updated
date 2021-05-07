@@ -96,11 +96,13 @@ def evaluation_model(data, params, ids):
     #     "Outwards_sum": 48.04
     # }
     QT_threshold_dict = {
-        "Filecount": 16.01
-        # "Editcount": 143.3,
-        # "MultilineCommentscount": 11.6,
-        # "Inwards_sum": 15.51,
-        # "Outwards_sum": 48.04
+        "Filecount": 6.58,
+        "Editcount": 143.35,
+        "MultilineCommentscount": 8.84,
+        "Inwards_sum": 22.81,
+        "Inwards_avg": 5.5,
+        "Outwards_sum": 46.785,
+        "Outwards_avg": 11.055
     }
 
     for character_name, threshold in QT_threshold_dict.items():
