@@ -2,7 +2,6 @@ from imblearn.over_sampling import RandomOverSampler
 import pandas as pd
 from collections import Counter
 import pickle
-from imblearn.over_sampling import SMOTE
 
 
 def label_hard_easy(commit_infor_file: str, original_file: str, threshold, characteristic):
@@ -11,25 +10,39 @@ def label_hard_easy(commit_infor_file: str, original_file: str, threshold, chara
     ids, labels, msgs, codes = data
     easy_hard_label = []
 
+    not_found = []
     for index, id_ in enumerate(ids):
-        value = df.loc[df['Commit_Hash'] == id_, characteristic].iloc[0]
+        try:
+            value = df.loc[df['Commit_Hash'] == id_, characteristic].iloc[0]
+            if value <= threshold:
+                easy_hard_label.append(0)
 
-        if value <= threshold:
-            easy_hard_label.append(0)
+            else:
+                easy_hard_label.append(1)
+        except:
+            not_found.append(id_)
 
-        else:
-            easy_hard_label.append(1)
 
-    return easy_hard_label
+
+
+    print('easy_hard_label:', len(easy_hard_label))
+    print('not found:', len(not_found))
+
+    return easy_hard_label, not_found
 
 if __name__ == "__main__":
-    train_commit_infor_file = "/Users/fjirigesi/Desktop/Jiri_openstack_train_infor.csv"
-    train_original_file = '/Users/fjirigesi/Downloads/deepjit_os/openstack_train.pkl'
+    # train_commit_infor_file = "/Users/fjirigesi/Desktop/Jiri_openstack_train_infor.csv"
+    # train_original_file = '/Users/fjirigesi/Downloads/deepjit_os/openstack_train.pkl'
+
+    train_commit_infor_file = "/Users/fjirigesi/Desktop/QT_train_infor.csv"
+    train_original_file = '/Users/fjirigesi/Downloads/qt_train_new.pkl'
+
     data = pickle.load(open(train_original_file, 'rb'))
-    easy_hard_label = label_hard_easy(train_commit_infor_file, train_original_file, 6.04, "Filecount")
+    easy_hard_label, not_found = label_hard_easy(train_commit_infor_file, train_original_file, 6.58, "Filecount")
 
     # define oversampling strategy
     oversample = RandomOverSampler(sampling_strategy='minority')
+
     # oversample = SMOTE()
 
     ids, labels, msgs, codes = data
@@ -41,6 +54,7 @@ if __name__ == "__main__":
 
     # summarize class distribution
     print(Counter(easy_hard_label))
+
     # fit and apply the transform
     data_over, easy_hard_label_over = oversample.fit_resample(df, easy_hard_label)
     print(Counter(easy_hard_label_over))
@@ -52,7 +66,7 @@ if __name__ == "__main__":
 
     over_data = (new_ids, new_labels, new_msgs, new_codes)
 
-    filename = "data/over_train_data.pkl"
+    filename = "data/over_train_QT_data.pkl"
 
     with open(filename, 'wb') as handle:
         pickle.dump(over_data, handle)
