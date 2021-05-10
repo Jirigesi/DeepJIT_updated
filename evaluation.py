@@ -110,7 +110,7 @@ def evaluation_model(data, params, ids):
         seperate_result = resultsAnalyze(test_result_file, test_commit_infor_file, threshold, character_name)
         easy_roc_auc, easy_precision, easy_recall, easy_f1, hard_roc_auc, hard_precision, hard_recall, hard_f1 = seperate_result
 
-        with open('qt_original_results.csv', mode='a') as result_file:
+        with open('qt_oversample_results.csv', mode='a') as result_file:
             result_writer = csv.writer(result_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
             result_writer.writerow([character_name, auc_score, total_precision, total_recall, total_f1, easy_roc_auc,
