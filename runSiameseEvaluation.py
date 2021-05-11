@@ -10,7 +10,7 @@ import time
 # model_path_list = ["./snapshot/2021-04-23_15-13-25/epoch_", "./snapshot/2021-04-23_20-54-01/epoch_"]
 # model_path_list = ["./snapshot/2021-04-24_12-46-04/epoch_", "./snapshot/2021-04-24_15-08-57/epoch_",
 #                    "./snapshot/2021-04-24_19-31-41/epoch_", "./snapshot/2021-04-24_22-36-20/epoch_"]
-model_path_list = ["./snapshot/2021-05-10_19-11-25/epoch_"]
+model_path_list = ["./snapshot/2021-05-10_23-07-43/epoch_"]
 
 # test_File_path = "./splittedData/hard_Outwards_sum_openstack_test.pkl"
 #
@@ -19,7 +19,7 @@ test_File_path_list = ["./splittedData/hard_Filecount_qt_test.pkl", "./splittedD
                        "./splittedData/hard_InwardsAvg_qt_test.pkl",
                        "./splittedData/hard_OutwardsSum_qt_test.pkl",
                        "./splittedData/hard_OutwardsAvg_qt_test.pkl"]
-# test_File_path_list = ["./splittedData/hard_OutwardsAvg_qt_test.pkl"]
+
 
 
 for test_File_path in test_File_path_list:
