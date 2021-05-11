@@ -18,9 +18,9 @@ model_path_list = ["./snapshot/2021-05-10_10-31-37/epoch_", "./snapshot/2021-05-
 #                        "./splittedData/hard_MultilineCommentscount_qt_test.pkl", "splittedData/hard_InwardsSum_qt_test.pkl"
 #                        "splittedData/hard_InwardsAvg_qt_test.pkl", "splittedData/hard_OutwardsSum_qt_test.pkl",
 #                        "splittedData/hard_Outwards_avg_qt_train.pkl"]
-test_File_path_list = ["splittedData/hard_InwardsSum_qt_test.pkl", "splittedData/hard_InwardsAvg_qt_test.pkl",
-                       "splittedData/hard_OutwardsSum_qt_test.pkl",
-                       "splittedData/hard_OutwardsAvg_qt_train.pkl"]
+test_File_path_list = ["./splittedData/hard_InwardsSum_qt_test.pkl", "./splittedData/hard_InwardsAvg_qt_test.pkl",
+                       "./splittedData/hard_OutwardsSum_qt_test.pkl",
+                       "./splittedData/hard_OutwardsAvg_qt_train.pkl"]
 
 
 for test_File_path in test_File_path_list:
