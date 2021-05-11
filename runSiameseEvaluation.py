@@ -15,12 +15,10 @@ model_path_list = ["./snapshot/2021-05-10_10-31-37/epoch_", "./snapshot/2021-05-
 # test_File_path = "./splittedData/hard_Outwards_sum_openstack_test.pkl"
 #
 # test_File_path_list = ["./splittedData/hard_Filecount_qt_test.pkl", "./splittedData/hard_Editcount_qt_test.pkl",
-#                        "./splittedData/hard_MultilineCommentscount_qt_test.pkl", "splittedData/hard_InwardsSum_qt_test.pkl"
-#                        "splittedData/hard_InwardsAvg_qt_test.pkl", "splittedData/hard_OutwardsSum_qt_test.pkl",
-#                        "splittedData/hard_Outwards_avg_qt_train.pkl"]
-test_File_path_list = ["./splittedData/hard_InwardsSum_qt_test.pkl", "./splittedData/hard_InwardsAvg_qt_test.pkl",
-                       "./splittedData/hard_OutwardsSum_qt_test.pkl",
-                       "./splittedData/hard_OutwardsAvg_qt_train.pkl"]
+#                        "./splittedData/hard_MultilineCommentscount_qt_test.pkl", ""./splittedData/hard_InwardsSum_qt_test.pkl", "./splittedData/hard_InwardsAvg_qt_test.pkl",
+#                        "./splittedData/hard_OutwardsSum_qt_test.pkl",
+#                        "./splittedData/hard_OutwardsAvg_qt_test.pkl"]
+test_File_path_list = ["./splittedData/hard_OutwardsAvg_qt_test.pkl"]
 
 
 for test_File_path in test_File_path_list:
